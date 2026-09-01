@@ -1,6 +1,6 @@
 # Nari Niti: Women's political reservations and local governance in India
 
-Do seats reserved for women change how Gram Panchayats govern? This project studies the rotation of sarpanch reservations using direct measures of program leakage, social-audit findings, and the Panchayat Advancement Index (PAI). The first implemented design links Rajasthan's 2020 reservation cycle to PAI measures from fiscal years 2022-23 and 2023-24. The Rajasthan estimates are exploratory because the design was not frozen before estimation.
+Do seats reserved for women change how Gram Panchayats govern? This project links Rajasthan's 2020 sarpanch and Uttar Pradesh's 2021 pradhan reservation cycles to the Panchayat Advancement Index (PAI). The UP specification was frozen before estimation. The Rajasthan estimates are exploratory.
 
 **Authors**: Data, Analysis, and Tools for India
 
@@ -14,17 +14,19 @@ Political reservations guarantee that women hold office. They do not guarantee t
 
 ## Research design
 
-The primary design compares Rajasthan Gram Panchayats assigned a women-reserved sarpanch seat in 2020 with otherwise eligible open seats in the same Panchayat Samiti and caste-reservation stratum. The primary outcome is the PAI 2.0 Good Governance score for fiscal year 2023-24. Identification requires the 2020 reservation allocation to be random within the reconstructed assignment strata and PAI availability not to select treated and open GPs differently.
+The UP design compares Gram Panchayats with a women-reserved pradhan seat in 2021 with known non-women categories in the same district, LGD block, and caste-reservation class. Rajasthan uses the analogous 2020 comparison within Panchayat Samiti and caste-reservation strata. The primary outcome is the PAI 2.0 Good Governance score for fiscal year 2023-24. Identification requires reservation allocation to be random within the reconstructed strata.
 
 ## Current stage
 
-The design is not frozen. At the author's direction, exploratory Rajasthan estimation began on September 1, 2026. [`pap.md`](pap.md) records the resulting unblinding and the decisions that remain open before any confirmatory extension.
+[`pap-up.md`](pap-up.md) froze the UP estimand, sample, outcome, estimator, inference, and robustness checks before the UP outcome-on-treatment regression. Commit `edd8b42` records that freeze. [`pap.md`](pap.md) records why the Rajasthan estimates remain exploratory.
+
+## UP result
+
+The frozen PAI 2.0 estimate is near zero, and its confidence interval excludes even a small positive association in the linked informative-strata sample. PAI 1.0, exact election-to-LGD links, block-clustered CR2 inference, and fixed-count randomization sensitivity agree. The generated values are in [`tabs/up_pai_effects.csv`](tabs/up_pai_effects.csv); the paper presents them without hand-maintained copies.
 
 ## Rajasthan result
 
-The PAI 2.0 estimate is -0.05 Good Governance points, with an HC2 95% confidence interval from -0.59 to 0.49 and a fixed-count randomization p-value of 0.847. This is -0.004 control-group standard deviations, with an interval from -0.049 to 0.040. In the linked, informative-strata sample, the estimate therefore rules out improvements larger than about 0.04 standard deviations.
-
-PAI 1.0 yields 0.25 points, with a 95% interval from -0.26 to 0.76 and a randomization p-value of 0.338. Because the PAI versions use different indicators and scoring systems, this is a separate replication rather than a pooled second wave. Neither result measures corruption directly.
+The exploratory Rajasthan estimates are also near zero. [`tabs/raj_pai_effects.csv`](tabs/raj_pai_effects.csv) contains the generated values. Because the two PAI versions use different indicators and scoring systems, PAI 1.0 is a separate replication rather than a pooled second wave.
 
 ## Quick start
 
@@ -37,11 +39,11 @@ PAI_DATA_DIR=/path/to/pai/consolidated Rscript scripts/99_run_all.R
 make paper
 ```
 
-`PAI_DATA_DIR` must contain `gp_metadata.csv` and `gp_scores_long.csv` rebuilt by [`in-rolls/pai`](https://github.com/in-rolls/pai) or extracted from its [Harvard Dataverse release](https://doi.org/10.7910/DVN/FRUKWS). The pipeline reads the Rajasthan election panel from a sibling `../quota_raj` clone unless `QUOTA_RAJ_PANEL` names an alternative file.
+`PAI_DATA_DIR` must contain `gp_metadata.csv` and `gp_scores_long.csv` rebuilt by [`in-rolls/pai`](https://github.com/in-rolls/pai) or extracted from its [Harvard Dataverse release](https://doi.org/10.7910/DVN/FRUKWS). The pipeline reads Rajasthan elections from sibling `../quota_raj` and the canonical UP election release from sibling `../local_elections_up`. `QUOTA_RAJ_PANEL` and `UP_ELECTION_FILE` can name alternative pinned files.
 
 ## Pipeline architecture
 
-The difficult step is linking election-era Gram Panchayats to two versions of PAI without treating a failed link as a zero outcome. PAI 1.0 includes LGD GP codes, so it joins directly. PAI 2.0 omits those codes, so the pipeline first matches normalized official LGD district, block, and GP names, then uses normalized election names for the remaining rows. Every join preserves the election panel and writes treatment-specific coverage and unmatched examples.
+The difficult step is linking election-era Gram Panchayats to two versions of PAI without treating a failed link as a zero outcome. PAI 1.0 includes LGD GP codes, so it joins directly. PAI 2.0 omits those codes, so the pipeline first matches normalized official LGD district, block, and GP names, then uses normalized election names for the remaining rows. Every join preserves the election panel and writes treatment-specific coverage and unmatched examples. UP election cleaning, name normalization, manual repairs, and LGD crosswalks live in `local_elections_up`; this repository imports its release instead of duplicating them.
 
 ```text
 scripts/
@@ -50,10 +52,16 @@ scripts/
 ├── 01a_pai_prepare.R            # PAI source profile and Rajasthan extract
 ├── 01b_raj_treatment_prepare.R  # Rajasthan reservation panel extract
 ├── 01c_pai2_group_audit.R       # manual district-block review evidence
+├── 01d_up_treatment_prepare.R    # pinned canonical UP election import
+├── 01e_up_pai_prepare.R          # UP PAI source profile
 ├── 02a_raj_pai_join.R           # executable join contract and audit files
 ├── 02b_raj_pai_fuzzy_candidates.py # blinded residual GP proposals
+├── 02c_up_pai_join.R             # row-preserving exact UP PAI joins
 ├── 03a_raj_pai_effects.R        # exploratory Rajasthan effect estimates
-├── 98_validate_design.R         # cross-artifact design gates
+├── 03b_up_pai_effects.R         # frozen UP estimates and robustness checks
+├── 03c_pai_comparison.R         # common-scale cross-state figure
+├── 98_validate_design.R         # Rajasthan design gates
+├── 98b_validate_up_design.R     # frozen UP design gates
 └── 99_run_all.R                 # explicit pipeline driver
 ```
 
@@ -72,6 +80,12 @@ The repository does not copy data owned by adjacent projects. [`data/manifest.ya
 - Source: [`in-rolls/quota_raj`](https://github.com/in-rolls/quota_raj)
 - Required file: `data/raj/shrug_gp_raj_15_20_block.parquet`
 
+### UP elections
+
+- Source: [`in-rolls/local_elections_up`](https://github.com/in-rolls/local_elections_up)
+- Required file: `data/fin/up_gp_elections_standardized.parquet`
+- Contents: canonical 2005, 2010, 2015, and 2021 GP election fields, reviewed name repairs, LGD block mapping, and accepted GP links
+
 ## Notes on analysis
 
 ### Stable outcome names
@@ -84,11 +98,16 @@ PAI 1.0 and PAI 2.0 use different indicator sets and scoring systems. They are s
 
 ### Interpretation boundary
 
-The estimates are exploratory conditional comparisons until the official assignment mechanism is verified. The repository excludes fuzzy PAI 2.0 links until a stratified clerical review measures their precision and recall. PAI alone cannot support a corruption claim.
+The UP specification is frozen, but all estimates remain conditional comparisons until the official assignment mechanisms are verified. PAI alone cannot support a corruption claim.
+
+### UP portal coverage
+
+The pinned portal extract is incomplete. The [official PAI 2.0 release](https://www.pib.gov.in/PressReleasePage.aspx?PRID=2256616&lang=1&reg=3) says that all 57,678 UP Gram Panchayats submitted and validated data, but repeated portal downloads return "Details are not available" for many blocks. Missing PAI rows in this repository therefore describe portal extraction and linkage coverage, not governance outcomes. Treatment-specific match rates are nearly identical, which is reassuring for differential selection but does not recover the unobserved population.
 
 ## Outputs
 
 - Analysis-ready data: `data/nari_niti/nari_niti_gp_raj_2022_2024.parquet`
+- UP analysis-ready data: `data/nari_niti/nari_niti_gp_up_2022_2024.parquet`
 - Link audits: `data/crosswalks/audit/`
 - Tables: `tabs/`
 - Figures: `figs/`

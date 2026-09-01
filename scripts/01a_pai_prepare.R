@@ -66,7 +66,13 @@ scores <- read_csv(
         district_std = normalize_name(.data$district),
         block_std = normalize_name(.data$block),
         gp_name_std = normalize_name(.data$gp_name),
-        pai_row_key = paste(.data$year, .data$district_value, .data$block_value, .data$gp_name_std, sep = "__")
+        pai_row_key = paste(
+            .data$year,
+            .data$district_value,
+            .data$block_value,
+            .data$gp_name_std,
+            sep = "__"
+        )
     )
 
 assert_unique(

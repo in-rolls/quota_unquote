@@ -52,3 +52,38 @@ The fuzzy review queue excludes treatment and PAI scores. A reviewer sees names,
 - Right-side reuse count, which must be zero for accepted PAI 2.0 links.
 - Unmatched examples from both sides.
 - Precision and recall from a hand-labeled sample stratified over score and margin.
+
+## UP election release
+
+```text
+LEFT   local_elections_up canonical election release
+       key: source_id within election year
+FILTER election_year = 2021 and office = gp
+OUT    exactly 49,773 winner rows
+RULE   import canonical names, reservation recodes, LGD links, and collision flags
+       do not maintain parallel name overrides in nari_niti
+```
+
+## UP PAI 1.0
+
+```text
+LEFT   49,773 UP election rows
+RIGHT  PAI 1.0 Good Governance rows
+KEY    accepted election-to-LGD GP code = PAI GP code
+CARD   one to one among accepted links
+OUT    exactly 49,773 rows; unmatched scores remain missing
+```
+
+## UP PAI 2.0
+
+```text
+LEFT   49,773 UP election rows
+RIGHT  PAI 2.0 Good Governance rows with unique normalized GP keys
+BLOCK  normalized district and LGD block
+PASS 1 exact normalized official LGD GP name
+PASS 2 exact normalized election GP name among unused rows
+CARD   one to one among accepted links
+OUT    exactly 49,773 rows; unmatched scores remain missing
+```
+
+The two UP wave joins stack to exactly 99,546 rows. The pipeline asserts unique election and PAI keys, preserves every election row, writes unmatched rows from both sides, and reports coverage by treatment. Normalized PAI keys with collisions are excluded rather than silently deduplicated.

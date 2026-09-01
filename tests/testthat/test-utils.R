@@ -24,3 +24,30 @@ test_that("the source manifest pins both inputs", {
     )
 })
 
+test_that("write_tex_macros writes named commands and rejects invalid names", {
+    output <- tempfile(fileext = ".tex")
+    expect_invisible(write_tex_macros(c(TestValue = "1.23"), output))
+    expect_identical(readLines(output), "\\newcommand{\\TestValue}{1.23}")
+    expect_error(write_tex_macros(c("Bad1" = "1.23"), output), "letters only")
+})
+
+test_that("the fixed-count simulator compiles and is reproducible", {
+    simulator <- new.env(parent = globalenv())
+    compile_stratified_simulator(simulator)
+    first <- simulator$simulate_stratified_statistics(
+        c(-1, 1, -2, 2),
+        c(0L, 0L, 1L, 1L),
+        c(1L, 1L),
+        20L,
+        42L
+    )
+    second <- simulator$simulate_stratified_statistics(
+        c(-1, 1, -2, 2),
+        c(0L, 0L, 1L, 1L),
+        c(1L, 1L),
+        20L,
+        42L
+    )
+    expect_identical(first, second)
+    expect_true(all(first %in% c(-3, -1, 1, 3)))
+})

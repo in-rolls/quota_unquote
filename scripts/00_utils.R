@@ -106,3 +106,56 @@ write_parquet_receipt <- function(data, path) {
     message("Created: ", path)
     invisible(path)
 }
+
+write_tex_macros <- function(values, path) {
+    if (is.null(names(values)) || any(!nzchar(names(values)))) {
+        stop("Every TeX macro value must have a name", call. = FALSE)
+    }
+    if (any(!grepl("^[A-Za-z]+$", names(values)))) {
+        stop("TeX macro names may contain letters only", call. = FALSE)
+    }
+    lines <- paste0("\\newcommand{\\", names(values), "}{", values, "}")
+    dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
+    writeLines(lines, path)
+    message("Created: ", path)
+    invisible(path)
+}
+
+compile_stratified_simulator <- function(env = parent.frame()) {
+    Rcpp::cppFunction(
+        includes = c(
+            "#include <algorithm>",
+            "#include <random>",
+            "#include <vector>"
+        ),
+        code = r"(
+        Rcpp::NumericVector simulate_stratified_statistics(
+            Rcpp::NumericVector outcome,
+            Rcpp::IntegerVector block_id,
+            Rcpp::IntegerVector treated_counts,
+            int repetitions,
+            int seed
+        ) {
+            int block_count = treated_counts.size();
+            std::vector<std::vector<int>> rows(block_count);
+            for (int i = 0; i < block_id.size(); ++i) {
+                rows[block_id[i]].push_back(i);
+            }
+            std::mt19937 generator(seed);
+            Rcpp::NumericVector statistics(repetitions);
+            for (int draw = 0; draw < repetitions; ++draw) {
+                double statistic = 0.0;
+                for (int block = 0; block < block_count; ++block) {
+                    std::shuffle(rows[block].begin(), rows[block].end(), generator);
+                    for (int j = 0; j < treated_counts[block]; ++j) {
+                        statistic += outcome[rows[block][j]];
+                    }
+                }
+                statistics[draw] = statistic;
+            }
+            return statistics;
+        }
+        )",
+        env = env
+    )
+}

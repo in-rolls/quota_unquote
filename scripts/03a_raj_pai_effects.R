@@ -198,6 +198,34 @@ format_number <- function(x, digits = 2L) {
     formatC(x, digits = digits, format = "f")
 }
 
+primary <- results |> filter(.data$pai_year == PAI_YEAR_PRIMARY)
+replication <- results |> filter(.data$pai_year == PAI_YEAR_REPLICATION)
+write_tex_macros(
+    c(
+        RajPaiTwoN = format(primary$n, big.mark = ",", scientific = FALSE),
+        RajPaiTwoStrata = format(
+            primary$informative_strata,
+            big.mark = ",",
+            scientific = FALSE
+        ),
+        RajPaiTwoDifference = format_number(primary$effect_points),
+        RajPaiTwoCILow = format_number(primary$hc2_conf_low),
+        RajPaiTwoCIHigh = format_number(primary$hc2_conf_high),
+        RajPaiTwoDifferenceSD = format_number(primary$effect_sd, 3L),
+        RajPaiTwoCILowSD = format_number(primary$hc2_conf_low_sd, 3L),
+        RajPaiTwoCIHighSD = format_number(primary$hc2_conf_high_sd, 3L),
+        RajPaiTwoRIP = format_number(primary$randomization_p_value, 3L),
+        RajPaiOneDifference = format_number(replication$effect_points),
+        RajPaiOneCILow = format_number(replication$hc2_conf_low),
+        RajPaiOneCIHigh = format_number(replication$hc2_conf_high),
+        RajPaiOneDifferenceSD = format_number(replication$effect_sd, 3L),
+        RajPaiOneCILowSD = format_number(replication$hc2_conf_low_sd, 3L),
+        RajPaiOneCIHighSD = format_number(replication$hc2_conf_high_sd, 3L),
+        RajPaiOneRIP = format_number(replication$randomization_p_value, 3L)
+    ),
+    here("tabs", "raj_pai_effects_macros.tex")
+)
+
 tex_rows <- results |>
     mutate(
         row = paste0(
@@ -222,7 +250,13 @@ tex <- c(
     tex_rows,
     "\\bottomrule",
     "\\end{tabular}",
-    "\\parbox{\\linewidth}{\\scriptsize \\emph{Notes:} Exploratory estimates. The effect is from an unweighted regression with assignment-stratum fixed effects and HC2 confidence intervals. RI permutes the observed number of women-reserved seats within each informative district--Panchayat Samiti--caste stratum. PAI 1.0 and PAI 2.0 are separate outcomes.}"
+    paste0(
+        "\\parbox{\\linewidth}{\\scriptsize \\emph{Notes:} Exploratory estimates. ",
+        "The effect is from an unweighted regression with assignment-stratum fixed ",
+        "effects and HC2 confidence intervals. RI permutes the observed number of ",
+        "women-reserved seats within each informative district by Panchayat Samiti ",
+        "by caste stratum. PAI 1.0 and PAI 2.0 are separate outcomes.}"
+    )
 )
 dir.create(here("tabs"), showWarnings = FALSE)
 writeLines(tex, here("tabs", "raj_pai_effects.tex"))

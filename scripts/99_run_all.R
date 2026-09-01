@@ -1,5 +1,5 @@
 # 99_run_all.R
-# Run the preparation and exploratory Rajasthan pipeline from the project root.
+# Run the Rajasthan and UP preparation, linkage, and analysis pipeline.
 # Output: prepared data, linkage audits, review queues, estimates, and a log.
 
 library(here)
@@ -64,6 +64,8 @@ message("\n### PHASE 1: SOURCE PREPARATION ###")
 run_script("01a_pai_prepare.R")
 run_script("01b_raj_treatment_prepare.R")
 run_script("01c_pai2_group_audit.R")
+run_script("01d_up_treatment_prepare.R")
+run_script("01e_up_pai_prepare.R")
 
 message("\n### PHASE 2: EXACT LINKAGE AND REVIEW QUEUES ###")
 run_script("02a_raj_pai_join.R")
@@ -72,11 +74,15 @@ run_command(
     here("scripts", "02b_raj_pai_fuzzy_candidates.py"),
     "preclink review queue"
 )
+run_script("02c_up_pai_join.R")
 
 message("\n### PHASE 3: DESIGN GATES ###")
 run_script("98_validate_design.R")
+run_script("98b_validate_up_design.R")
 
-message("\n### PHASE 4: EXPLORATORY RAJASTHAN ESTIMATION ###")
+message("\n### PHASE 4: ESTIMATION ###")
 run_script("03a_raj_pai_effects.R")
+run_script("03b_up_pai_effects.R")
+run_script("03c_pai_comparison.R")
 
-log_msg("Exploratory Rajasthan pipeline completed.")
+log_msg("Rajasthan and UP PAI pipeline completed.")

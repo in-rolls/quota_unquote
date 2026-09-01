@@ -68,3 +68,16 @@ functional-form search is primary. Any such result must be labeled exploratory.
 - PAI consolidated files are pinned in `data/manifest.yaml`.
 - UP joined-file row contract: 49,773 election rows per PAI wave.
 
+## Post-freeze results
+
+The design was frozen in commit `edd8b42cd4997fc0a01e516031cd886f3e66f099` before the first UP outcome-on-treatment regression. `tabs/up_pai_effects.csv` is the numerical source of truth.
+
+The primary PAI 2.0 conditional difference is -0.0419 points with an HC2 95% confidence interval from -0.3963 to 0.3125. This is -0.0024 control-group standard deviations with an interval from -0.0224 to 0.0176. The fixed-count randomization sensitivity yields 0.8182. PAI 1.0, CR2 block clustering, and the exact election-to-LGD subset agree with the near-zero primary result.
+
+The analysis supports a precise null conditional association in the linked informative-strata sample. It does not establish a causal effect or an effect on corruption.
+
+## Deviations and implementation notes
+
+- No frozen estimand, outcome, sample rule, weighting rule, fixed effect, interval method, exact-link restriction, or randomization count changed after unblinding.
+- The CR2 companion uses the Frisch-Waugh-Lovell within-stratum transformation followed by `clubSandwich::vcovCR(type = "CR2")`. This is algebraically equivalent to the frozen fixed-effect regression and reproduces the Rajasthan `estimatr::lm_robust` coefficient and CR2 standard error.
+- The fixed-count randomization sampler was implemented in Rcpp because materializing the full assignment matrix would require roughly one gigabyte. The statistic, number of draws, seed, strata, treatment counts, and finite-sample p-value correction remain as frozen.

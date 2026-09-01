@@ -1,6 +1,6 @@
 # Data dictionary
 
-One row in the analysis-ready file is one Rajasthan election GP from the 2015 to 2020 panel observed against one PAI version. The left table always remains the election panel, so the file has two rows per election GP even when no PAI record links.
+One row in each analysis-ready file is one election GP observed against one PAI version. The left table always remains the election panel, so each file has two rows per election GP even when no PAI record links. Rajasthan contains the 2015 to 2020 panel. UP contains the canonical 2021 winners imported from `local_elections_up`.
 
 | name | source file | type | unit | universe | values | missing codes | missing kind | transformation | provenance |
 |---|---|---|---|---|---|---|---|---|---|
@@ -29,9 +29,27 @@ One row in the analysis-ready file is one Rajasthan election GP from the 2015 to
 | `pai_link_method` | derived | character | election GP and version | matched rows | direct code, exact name, reviewed fuzzy | missing on unmatched rows | linkage missingness | records the accepted pass | `02a_raj_pai_join.R` |
 | `pai_available` | derived | logical | election GP and version | all joined rows | TRUE, FALSE | none | none | score is nonmissing | `02a_raj_pai_join.R` |
 
+## UP fields
+
+| name | source file | type | unit | universe | values | missing codes | missing kind | transformation | provenance |
+|---|---|---|---|---|---|---|---|---|---|
+| `election_gp_key` | `local_elections_up/...standardized.parquet` | character | 2021 election GP | all 2021 winner rows | stable source key | none | none | imported unchanged | `01d_up_treatment_prepare.R` |
+| `raw_district_2021` | same | character | election GP | all 2021 rows | source district name | none | none | imported raw field | `local_elections_up` |
+| `raw_block_2021` | same | character | election GP | all 2021 rows | source block name | none | none | imported raw field | `local_elections_up` |
+| `raw_gp_name_2021` | same | character | election GP | 2021 rows with a published GP name | source GP name | blank | source missingness | imported raw field | `local_elections_up` |
+| `raw_reservation_2021` | same | character | election GP | all 2021 rows | published reservation category | none | none | imported raw field | `local_elections_up` |
+| `raw_lgd_block_code` | same | character | election GP | all 2021 rows | LGD block code | none | none | reviewed block crosswalk | `local_elections_up` |
+| `raw_lgd_gp_code` | same | character | election GP | accepted election-to-LGD GP links | LGD GP code | missing when unlinked | linkage missingness | exact or reviewed preclink link | `local_elections_up` |
+| `raw_lgd_gp_link_method` | same | character | election GP | accepted election-to-LGD GP links | exact normalized name, preclink | missing when unlinked | linkage missingness | imported unchanged | `local_elections_up` |
+| `an_women_reserved` | same | integer | election GP | all 2021 rows | 0, 1 | none allowed | none | 1 only for an explicitly women-reserved seat | `01d_up_treatment_prepare.R` |
+| `assignment_stratum` | same | character | election GP | all 2021 rows | district, LGD block, caste composite | none | none | concatenated with explicit separators | `01d_up_treatment_prepare.R` |
+| `pai_link_method` | derived | character | election GP and version | matched UP rows | direct LGD code, exact official name, exact election name | missing when unmatched | linkage missingness | records the accepted join pass | `02c_up_pai_join.R` |
+| `pai_available` | derived | logical | election GP and version | all joined UP rows | TRUE, FALSE | none | none | score is nonmissing | `02c_up_pai_join.R` |
+
 ## Open questions
 
 - The 2020 reservation allocation frame and fixed treatment counts within each district, Panchayat Samiti, and caste category still require an official source.
 - PAI 2.0 omits GP codes. The 77 nonexact district-block mappings passed blinded clerical review; `pai2_group_mapping_audit.csv` records the supporting counts and GP-name overlaps.
-- GP fuzzy-link precision and recall remain unknown until a stratified clerical sample is labeled.
+- Rajasthan GP fuzzy-link precision and recall remain unknown until a stratified clerical sample is labeled.
+- The UP election-to-LGD accepted threshold has 75 accepted-band links checked by hand, all judged matches. Lower-scoring proposals remain outside the active crosswalk.
 - PAI score missingness in the joined file currently means failed record linkage, not a portal score of zero.

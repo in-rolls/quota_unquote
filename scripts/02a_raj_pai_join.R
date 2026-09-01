@@ -237,7 +237,11 @@ if (nrow(gp_overrides) > 0L) {
         joined_2 |> filter(!.data$election_gp_key %in% replace_keys),
         panel_groups |>
             filter(.data$election_gp_key %in% replace_keys) |>
-            left_join(override_values, by = join_by(election_gp_key), relationship = "one-to-one") |>
+            left_join(
+                override_values,
+                by = join_by(election_gp_key),
+                relationship = "one-to-one"
+            ) |>
             mutate(
                 pai_link_method = "reviewed_fuzzy_gp_name",
                 pai_year = PAI_YEAR_PRIMARY,

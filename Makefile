@@ -8,6 +8,7 @@ data:
 	Rscript scripts/99_run_all.R
 
 lint:
+	Rscript -e 'l <- lintr::lint_dir("scripts"); print(l); quit(status = as.integer(length(l) > 0L))'
 	.venv/bin/ruff check .
 	.venv/bin/ruff format --check .
 

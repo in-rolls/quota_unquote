@@ -1,6 +1,6 @@
 # Claim ladder
 
-Triage: empirical argument, Mode A, written from scratch before treatment effects exist.
+Triage: empirical argument, Mode A. Lines 1 through 10 predate the estimates; lines 11 through 16 record the result and its scope.
 
 1. Women's political reservations put women in office but may not give them effective authority.
 2. Effective authority can change leakage, public oversight, and administrative procedure.
@@ -12,5 +12,9 @@ Triage: empirical argument, Mode A, written from scratch before treatment effect
 8. PAI 2.0 linkage crosses a major boundary reform, so district and block groups require manual crosswalks before GP names are scored.
 9. GP-level fuzzy links can enter the analysis only after blinded clerical review.
 10. The evidence will support a broad claim about corruption and governance only if direct and procedural outcomes are interpreted as distinct measures.
-11. The exploratory PAI 2.0 estimate is -0.05 points, with a 95% interval from -0.59 to 0.49, equivalent to -0.004 standard deviations with an interval from -0.049 to 0.040.
-12. The PAI result rules out improvements larger than about 0.04 standard deviations in the linked informative-strata sample, but it does not identify an effect on corruption.
+11. The UP analysis was frozen before the outcome-on-treatment regression; the Rajasthan analysis was not.
+12. The frozen UP PAI 2.0 estimate is near zero, and its interval excludes even a small positive association in the linked sample.
+13. UP PAI 1.0, exact election-to-LGD links, CR2 block clustering, and fixed-count randomization sensitivity agree.
+14. The exploratory Rajasthan estimates are also near zero.
+15. Balanced PAI availability by treatment reduces concern about differential linkage but does not restore the missing population.
+16. The PAI evidence does not establish random assignment, effective authority, or reduced corruption.
