@@ -1,0 +1,26 @@
+[project]
+name = "nari-niti-linkage"
+version = "0.1.0"
+description = "Blinded record-linkage support for the Nari Niti analysis"
+requires-python = ">=3.12"
+dependencies = [
+    "pandas>=2.0",
+    "pyarrow>=15",
+    "preclink==1.2.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "ruff>=0.14",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "RUF"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,70 @@
+\documentclass[12pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{fontspec}
+\usepackage{libertinus}
+\usepackage{setspace}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{needspace}
+
+\hypersetup{colorlinks=true, linkcolor=black, citecolor=black, urlcolor=blue}
+
+\title{Nari Niti: Women's Political Reservations and Local Governance in India}
+\author{Data, Analysis, and Tools for India}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\noindent Political reservations put women in local office, but they need not reduce corruption or improve how local government works. We link Rajasthan's 2020 sarpanch reservation cycle to the Panchayat Advancement Index. The exploratory PAI 2.0 estimate is $-0.05$ points (95\% CI: $-0.59$, $0.49$), or $-0.004$ control-group standard deviations. The interval rules out improvements larger than $0.04$ standard deviations in the linked sample. PAI measures reported governance procedure and performance, so this result does not establish an effect on corruption.
+\end{abstract}
+
+\thispagestyle{empty}
+\newpage
+\doublespacing
+
+Political reservations can change local government only when elected women exercise authority. A woman sarpanch may curb leakage, open decisions to public scrutiny, or improve administrative procedure. But these outcomes are not interchangeable. A clean audit directly bears on corruption; a meeting recorded in an administrative portal bears on procedure.
+
+This paper keeps those measures separate. Evidence for a corruption claim must come from program leakage and social audits. The Panchayat Advancement Index, or PAI, measures governance and reported performance across Gram Panchayats. Its Good Governance theme covers accounts, public meetings, beneficiary lists, grievance systems, procurement, planning, and online administration. A higher score may reflect more accountable government, better record keeping, or greater effort to satisfy the index. It does not by itself show that graft fell.
+
+\section{Research design}
+
+The primary design uses Rajasthan's 2020 sarpanch reservation cycle. The proposed comparison is between Gram Panchayats assigned a women-reserved seat and eligible Gram Panchayats whose gender category remained open within the same Panchayat Samiti and caste-reservation stratum. The causal interpretation requires the official allocation to be random within those strata. Balance cannot establish that fact, so the analysis will reconstruct the allocation from the governing rule and roster before estimating an effect.
+
+The proposed primary outcome is the PAI 2.0 Good Governance score for fiscal year 2023/24. The unit and weight are one Gram Panchayat and one vote in the average. PAI 1.0 is a separate replication because its indicators and scoring system differ from PAI 2.0. The two versions are not a panel outcome.
+
+\Needspace{10\baselineskip}
+\section{Measurement and linkage}
+
+PAI 1.0 reports LGD Gram Panchayat codes, which permit a direct join. PAI 2.0 omits those codes and uses the district map created after Rajasthan reorganized its districts. The linkage therefore normalizes names, maps old district-block groups to the new PAI groups through a reviewed crosswalk, and scores residual GP names only inside approved groups.
+
+The fuzzy matcher never decides the analysis sample. It writes candidate pairs, scores, and one-to-one proposals to an audit directory. Reviewers inspect those pairs without reservation status or PAI scores and move only approved links into the active crosswalk. A failed link remains missing rather than becoming a zero.
+
+\Needspace{12\baselineskip}
+\section{Exploratory results}
+
+The primary linked sample contains 5,422 Gram Panchayats in 683 assignment strata containing both women-reserved and open seats. The unweighted estimate with assignment-stratum fixed effects is $-0.05$ PAI 2.0 Good Governance points (95\% CI: $-0.59$, $0.49$). Relative to the control-group standard deviation, the estimate is $-0.004$ (95\% CI: $-0.049$, $0.040$). A fixed-count randomization test that permutes reservation within strata yields $p=0.847$.
+
+The PAI 1.0 replication estimate is $0.25$ points (95\% CI: $-0.26$, $0.76$), or $0.026$ standard deviations (95\% CI: $-0.027$, $0.078$), with a randomization $p$-value of $0.338$. The versions do not measure a common scale, but neither estimate supports a substantively meaningful improvement in measured Good Governance.
+
+\begin{table}[htbp]
+\centering
+\caption{Women's Reservations and PAI Good Governance}
+\label{tab:raj_pai_effects}
+\small
+\input{../tabs/raj_pai_effects.tex}
+\end{table}
+
+\Needspace{6\baselineskip}
+These estimates were produced at the author's direction before the design was frozen. They are exploratory rather than confirmatory. The causal interpretation also remains conditional on verifying that the reconstructed strata reproduce the official 2020 assignment mechanism.
+
+\section{Scope of the claim}
+
+The paper can claim that women's reservations change corruption only if direct leakage or audit measures support that conclusion. A change in PAI alone will be described as a change in measured governance or administrative compliance. That distinction is part of the design, not a qualification added after the estimates are known.
+
+\end{document}

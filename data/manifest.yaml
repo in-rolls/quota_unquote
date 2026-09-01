@@ -1,0 +1,21 @@
+upstream:
+  pai:
+    repo: in-rolls/pai
+    ref: 293ace5646d281b6f56bdfef983373ac559039c6
+    sibling: ../pai
+    release: https://doi.org/10.7910/DVN/FRUKWS
+    files:
+      gp_metadata.csv: f2ea4285311244e151f3113c1f7d73443a6554dd2f1448d65254b30bb500b86a
+      gp_scores_long.csv: 8dca2c14beef714255a5b798916fd0855fd0476194677cf24feb797887577fcd
+  quota_raj:
+    repo: in-rolls/quota_raj
+    ref: 50c7fc919ff0f99e02da1a9c232fe3e56fb15823
+    sibling: ../quota_raj
+    files:
+      data/raj/shrug_gp_raj_15_20_block.parquet: 426689e39427c6b058b819133623137b2679bd813b9723a81ae5bb8f1d0e9817
+  local_elections_up:
+    repo: in-rolls/local_elections_up
+    ref: 3e19684df019be328664f2f98362d789874855d9
+    sibling: ../local_elections_up
+    files:
+      data/fin/up_gp_elections_standardized.parquet: 986893d620e3d1d0d46e3d306909cc7acf3ccbae383346e4f47b39de9f62fe76

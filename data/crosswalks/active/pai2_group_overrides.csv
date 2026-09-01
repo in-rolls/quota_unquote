@@ -1,0 +1,78 @@
+left_district_std,left_block_std,pai_district_std,pai_block_std,evidence,status,reviewer,reviewed_at,notes
+ajmer,jawaja,beawar,jawaja,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+ajmer,masooda,beawar,masooda,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+alwar,bansur,kotputli behror,bansur,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+alwar,behror,kotputli behror,behror,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+alwar,kishangarh bas,khairthal tijara,kishangarh bas,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+alwar,kotkasim,khairthal tijara,kotkasim,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+alwar,mandawar,khairthal tijara,mandaawar,12 exact GP-name overlaps; block spelling differs,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+alwar,neemrana,kotputli behror,neemrana,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+alwar,tijara,khairthal tijara,tijara,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+barmer,balotra,balotra,baltora,12 exact GP-name overlaps; block spelling differs,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+barmer,baytoo,balotra,baytoo,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+barmer,gira,balotra,gira,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+barmer,kalyanpur,balotra,kalyanpur,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+barmer,patodi,balotra,patodi,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+barmer,samdari,balotra,samdari,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+barmer,sindhari,balotra,sindhari,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+barmer,siwana,balotra,siwana,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+bharatpur,deeg,deeg,deeg,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+bharatpur,kaman,deeg,kaman,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+bharatpur,kumher,deeg,kumher,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+bharatpur,nagar pahari,deeg,nagar pahari,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+bharatpur,pahari,deeg,pahari,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+chittaurgarh,bari sadri,chittorgarh,bari sadri,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+chittaurgarh,begun,chittorgarh,begun,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+chittaurgarh,bhadesar,chittorgarh,bhadesar,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+chittaurgarh,bhainsrorgarh,chittorgarh,bhainsrorgarh,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+chittaurgarh,bhopalsagar,chittorgarh,bhopalsagar,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+chittaurgarh,chittorgarh,chittorgarh,chittorgarh,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+chittaurgarh,dungla,chittorgarh,dungla,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+chittaurgarh,gangrar,chittorgarh,gangrar,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+chittaurgarh,kapasan,chittorgarh,kapasan,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+chittaurgarh,nimbahera,chittorgarh,nimbahera,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+chittaurgarh,rashmi,chittorgarh,rashmi,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+dhaulpur,bari,dholpur,bari,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+dhaulpur,baseri,dholpur,baseri,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+dhaulpur,dhaulpur,dholpur,dhaulpur,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+dhaulpur,rajakhera,dholpur,rajakhera,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+dhaulpur,saipau,dholpur,saipau,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jaipur,kotputli,kotputli behror,kotputli,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jaipur,paota,kotputli behror,paota,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jaipur,viratnagar,kotputli behror,viratnagar,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jalor,ahore,jalore,ahore,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jalor,bhinmal,jalore,bhinmal,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jalor,chitalwana,jalore,chitalwana,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jalor,jalore,jalore,jalore,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jalor,jaswantpura,jalore,jaswantpura,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jalor,raniwara,jalore,raniwara,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jalor,sanchore,jalore,sanchore,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jalor,sayla,jalore,sayla,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jhunjhunun,alsisar,jhunjhunu,alsisar,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jhunjhunun,buhana,jhunjhunu,buhana,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jhunjhunun,chirawa,jhunjhunu,chirawa,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jhunjhunun,jhunjhunu,jhunjhunu,jhunjhunu,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jhunjhunun,khetri,jhunjhunu,khetri,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jhunjhunun,nawalgarh,jhunjhunu,nawalgarh,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jhunjhunun,surajgarh,jhunjhunu,surajgarh,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jhunjhunun,udaipurwati,jhunjhunu,udaipurwati,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jodhpur,bap,phalodi,bap,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jodhpur,bapini,phalodi,bapini,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jodhpur,dechu,phalodi,dechu,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jodhpur,lohawat,phalodi,lohawat,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+jodhpur,phalodi,phalodi,phalodi,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+nagaur,didwana,didwana kuchaman,didwana,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+nagaur,kuchaman city,didwana kuchaman,kuchaman,13 exact GP-name overlaps; block name shortened,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+nagaur,ladnu,didwana kuchaman,ladnu,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+nagaur,makrana,didwana kuchaman,makrana,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+nagaur,molasar,didwana kuchaman,molasar,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+nagaur,nawa,didwana kuchaman,nawa,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+nagaur,parbatsar,didwana kuchaman,parbatsar,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+pali,jaitaran,beawar,jaitaran,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+pali,raipur,beawar,raipur,13 exact GP-name overlaps; disambiguates from Bhilwara Raipur,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+rajsamand,bhim,beawar,bhim,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+udaipur,jhallara,salumbar,jhallara,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+udaipur,lasadiya,salumbar,lasadiya,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+udaipur,salumbar,salumbar,salumbar,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+udaipur,sarada,salumbar,sarada,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
+udaipur,semari,salumbar,semari,unique PAI block name,approved,codex-assisted-clerical-review,2026-08-31,Reviewed without treatment or outcome fields; see generated group mapping audit.
