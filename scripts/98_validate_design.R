@@ -46,7 +46,7 @@ analysis_scripts <- list.files(
     here("scripts"), pattern = "(main|effect|model)", full.names = FALSE
 )
 if (length(analysis_scripts) > 0L) {
-    pap_text <- paste(readLines(here("pap.md"), warn = FALSE), collapse = "\n")
+    pap_text <- paste(readLines(here("docs", "design.md"), warn = FALSE), collapse = "\n")
     if (!grepl("exploratory Rajasthan outcome analysis began", pap_text, fixed = TRUE)) {
         stop("Outcome analysis exists without an unblinding disclosure", call. = FALSE)
     }

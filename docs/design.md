@@ -1,4 +1,6 @@
-# Frozen UP analysis plan
+# Analysis design and status
+
+## Uttar Pradesh: frozen analysis plan
 
 Status: frozen on September 1, 2026, before any UP outcome-on-treatment
 regression was run. Source outcomes, marginal distributions, overall linkage,
@@ -81,3 +83,20 @@ The analysis supports a precise null conditional association in the linked infor
 - No frozen estimand, outcome, sample rule, weighting rule, fixed effect, interval method, exact-link restriction, or randomization count changed after unblinding.
 - The CR2 companion uses the Frisch-Waugh-Lovell within-stratum transformation followed by `clubSandwich::vcovCR(type = "CR2")`. This is algebraically equivalent to the frozen fixed-effect regression and reproduces the Rajasthan `estimatr::lm_robust` coefficient and CR2 standard error.
 - The fixed-count randomization sampler was implemented in Rcpp because materializing the full assignment matrix would require roughly one gigabyte. The statistic, number of draws, seed, strata, treatment counts, and finite-sample p-value correction remain as frozen.
+
+## Rajasthan: exploratory analysis
+
+The Rajasthan analysis was not preregistered or frozen before estimation. Source rows,
+outcome distributions, linkage coverage, and treatment-specific availability had already
+been examined when exploratory outcome analysis began on September 1, 2026. Its estimates
+must remain labeled exploratory.
+
+The analysis uses an unweighted comparison of women-reserved and open-gender sarpanch seats
+within reconstructed Panchayat Samiti and caste-reservation strata. Its causal interpretation
+would require the official 2020 allocation to be random within those strata. Rotation order,
+population rules, boundary changes, or administrative discretion could violate that condition.
+
+PAI 2.0 Good Governance is the principal Rajasthan outcome, with PAI 1.0 treated as a
+separate replication because the indicator systems differ. Failed links remain missing and
+are never recoded as zero. Because exploratory Rajasthan outcome analysis began before the
+design was frozen, neither the estimates nor later robustness checks are confirmatory.

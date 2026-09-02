@@ -1,4 +1,4 @@
-.PHONY: sync data lint test paper check
+.PHONY: sync data lint test design paper check
 
 sync:
 	Rscript -e 'renv::restore(prompt = FALSE)'
@@ -16,7 +16,11 @@ test:
 	Rscript tests/testthat.R
 	.venv/bin/pytest -q
 
+design:
+	Rscript scripts/98_validate_design.R
+	Rscript scripts/98b_validate_up_design.R
+
 paper:
 	cd ms && ./compile.sh
 
-check: lint test paper
+check: lint test design paper

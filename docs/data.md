@@ -53,3 +53,62 @@ One row in each analysis-ready file is one election GP observed against one PAI 
 - Rajasthan GP fuzzy-link precision and recall remain unknown until a stratified clerical sample is labeled.
 - The UP election-to-LGD accepted threshold has 75 accepted-band links checked by hand, all judged matches. Lower-scoring proposals remain outside the active crosswalk.
 - PAI score missingness in the joined file currently means failed record linkage, not a portal score of zero.
+
+## Join contract
+
+### Rajasthan PAI 1.0
+
+The left table is the 7,882-row Rajasthan election panel, keyed uniquely by
+`election_gp_key`. PAI Theme 8 is unique by `gp_code`. The many-to-one direct LGD-code
+join must preserve all 7,882 election rows; missing LGD codes remain unmatched.
+
+### Rajasthan PAI 2.0 geography
+
+The pipeline first joins normalized district-block groups exactly. Nonexact groups require
+an approved row in `pai2_group_overrides.csv`. The active list contains 77 source groups
+affected by spelling or Rajasthan's district reorganization. Review excluded treatment and
+outcome fields. Each target must exist in PAI, each left group must be unique, and ambiguous
+statewide block names require explicit evidence.
+
+Within approved groups, exact normalized official GP names are tried first, followed by exact
+normalized election names. Preclink Jaro-Winkler scores, a 0.85 threshold, a 0.05 margin, and
+Hungarian assignment produce proposals only. A reviewer must approve a proposal before it
+enters the analysis crosswalk. Accepted links are one to one and unmatched outcomes remain
+missing.
+
+### Uttar Pradesh election and PAI joins
+
+The canonical `local_elections_up` release supplies exactly 49,773 2021 GP winner rows.
+This repository imports its names, reservation recodes, LGD links, and collision flags rather
+than maintaining parallel overrides.
+
+PAI 1.0 joins accepted election-to-LGD GP codes directly. PAI 2.0 first uses exact normalized
+official GP names within district and LGD block, then exact normalized election GP names among
+unused rows. Accepted links must be one to one. Each wave preserves all 49,773 election rows,
+and the stacked file must contain exactly 99,546 rows.
+
+### Required diagnostics
+
+- Row counts before and after every join.
+- Key uniqueness on the required side.
+- Match rates overall and by reservation status.
+- Linked GPs and informative assignment strata by PAI version.
+- No reuse of accepted PAI 2.0 rows.
+- Unmatched examples from both sides.
+- Precision and recall from a hand-labeled sample stratified by score and margin.
+
+## Recode contract
+
+| variable | definition | required check |
+|---|---|---|
+| `an_women_reserved` (Rajasthan) | 1 for a women-reserved 2020 sarpanch seat; 0 for an open-gender category | observed values are exactly 0 and 1 |
+| `assignment_stratum` (Rajasthan) | district, Panchayat Samiti, and caste category joined with explicit separators | no component may be missing |
+| `*_std` | ASCII transliteration, lowercase, punctuation replaced by spaces, and collapsed whitespace | unit tests cover punctuation, accents, whitespace, and missing values |
+| `canonical_district_std`, `canonical_block_std` | exact PAI group or approved override | target exists in PAI and each left group is unique |
+| `pai_available` | true exactly when a linked PAI Good Governance score is present | equality asserted by the design validators |
+| `an_women_reserved` (UP) | 1 only when the 2021 reservation label explicitly identifies a women's category | values are exactly 0 and 1; winner sex is never used |
+| `assignment_stratum` (UP) | canonical district, LGD block, and caste-reservation class | no component may be missing |
+| `raw_lgd_gp_code` (UP) | exact-name or reviewed preclink link from the canonical election release | accepted links are one to one |
+
+No missing value is replaced with zero. The pipeline stops when source row counts, key
+cardinality, treatment levels, or crosswalk targets differ from these contracts.

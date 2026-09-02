@@ -29,7 +29,7 @@ coverage <- joined |>
     summarise(max_gap = max(.data$rate) - min(.data$rate), .groups = "drop")
 stopifnot(all(coverage$max_gap < 0.02))
 
-plan <- paste(readLines(here("pap-up.md"), warn = FALSE), collapse = "\n")
+plan <- paste(readLines(here("docs", "design.md"), warn = FALSE), collapse = "\n")
 required <- c(
     "before any UP outcome-on-treatment",
     "conditional association",
