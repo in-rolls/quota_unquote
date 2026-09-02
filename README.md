@@ -130,6 +130,5 @@ make check
 - `tabs/` and `figs/` contain generated results.
 - [`docs/design.md`](docs/design.md) records analysis status and specifications.
 - [`docs/data.md`](docs/data.md) defines variables, recodes, and linkage contracts.
-- [`docs/audit.md`](docs/audit.md) records completed checks and unresolved threats.
 
 The manuscript source is [`ms/main.tex`](ms/main.tex); `make paper` builds `ms/main.pdf`.
