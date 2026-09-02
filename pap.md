@@ -1,4 +1,4 @@
-# Pre-analysis plan: Nari Niti
+# Pre-analysis plan: Quota, Unquote
 
 Status: draft, not frozen, not tagged, and unblinded.
 

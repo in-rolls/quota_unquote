@@ -11,7 +11,7 @@ source(here("scripts", "00_config.R"))
 source(here("scripts", "00_utils.R"))
 
 panel <- read_parquet(here("data", "quota_raj", "quota_raj_gp_raj_2015_2020.parquet"))
-joined <- read_parquet(here("data", "nari_niti", "nari_niti_gp_raj_2022_2024.parquet"))
+joined <- read_parquet(here("data", "quota_unquote", "quota_unquote_gp_raj_2022_2024.parquet"))
 groups <- read_csv(
     here("data", "crosswalks", "active", "pai2_group_overrides.csv"),
     col_types = cols(.default = col_character()),

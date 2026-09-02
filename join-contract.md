@@ -61,7 +61,7 @@ LEFT   local_elections_up canonical election release
 FILTER election_year = 2021 and office = gp
 OUT    exactly 49,773 winner rows
 RULE   import canonical names, reservation recodes, LGD links, and collision flags
-       do not maintain parallel name overrides in nari_niti
+       do not maintain parallel name overrides in quota_unquote
 ```
 
 ## UP PAI 1.0

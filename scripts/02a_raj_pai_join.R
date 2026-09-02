@@ -1,6 +1,6 @@
 # 02a_raj_pai_join.R
 # Link the Rajasthan reservation panel to PAI and prepare blinded fuzzy queues.
-# Output: data/nari_niti/nari_niti_gp_raj_2022_2024.parquet,
+# Output: data/quota_unquote/quota_unquote_gp_raj_2022_2024.parquet,
 #         data/crosswalks/audit/pai_coverage_by_treatment.csv,
 #         data/crosswalks/audit/pai2_unmatched_left.parquet,
 #         data/crosswalks/audit/pai2_unmatched_right.parquet
@@ -329,7 +329,7 @@ group_status <- group_overrides |>
 
 write_parquet_receipt(
     joined,
-    here("data", "nari_niti", "nari_niti_gp_raj_2022_2024.parquet")
+    here("data", "quota_unquote", "quota_unquote_gp_raj_2022_2024.parquet")
 )
 write_parquet_receipt(
     unmatched_left,

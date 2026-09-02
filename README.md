@@ -1,4 +1,4 @@
-# Nari Niti: Women's political reservations and local governance in India
+# Quota, Unquote: Women's political reservations and local governance in India
 
 Do seats reserved for women change how Gram Panchayats govern? This project links Rajasthan's 2020 sarpanch and Uttar Pradesh's 2021 pradhan reservation cycles to the Panchayat Advancement Index (PAI). The UP specification was frozen before estimation. The Rajasthan estimates are exploratory.
 
@@ -31,8 +31,8 @@ The exploratory Rajasthan estimates are also near zero. [`tabs/raj_pai_effects.c
 ## Quick start
 
 ```bash
-git clone https://github.com/in-rolls/nari_niti.git
-cd nari_niti
+git clone https://github.com/in-rolls/quota_unquote.git
+cd quota_unquote
 R -e "renv::restore()"
 uv sync --all-groups
 PAI_DATA_DIR=/path/to/pai/consolidated Rscript scripts/99_run_all.R
@@ -106,8 +106,8 @@ The pinned portal extract is incomplete. The [official PAI 2.0 release](https://
 
 ## Outputs
 
-- Analysis-ready data: `data/nari_niti/nari_niti_gp_raj_2022_2024.parquet`
-- UP analysis-ready data: `data/nari_niti/nari_niti_gp_up_2022_2024.parquet`
+- Analysis-ready data: `data/quota_unquote/quota_unquote_gp_raj_2022_2024.parquet`
+- UP analysis-ready data: `data/quota_unquote/quota_unquote_gp_up_2022_2024.parquet`
 - Link audits: `data/crosswalks/audit/`
 - Tables: `tabs/`
 - Figures: `figs/`

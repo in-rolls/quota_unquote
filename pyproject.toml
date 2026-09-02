@@ -1,7 +1,7 @@
 [project]
-name = "nari-niti-linkage"
+name = "quota-unquote-linkage"
 version = "0.1.0"
-description = "Blinded record-linkage support for the Nari Niti analysis"
+description = "Blinded record-linkage support for the Quota, Unquote analysis"
 requires-python = ">=3.12"
 dependencies = [
     "pandas>=2.0",
