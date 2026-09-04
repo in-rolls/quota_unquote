@@ -112,3 +112,33 @@ and the stacked file must contain exactly 99,546 rows.
 
 No missing value is replaced with zero. The pipeline stops when source row counts, key
 cardinality, treatment levels, or crosswalk targets differ from these contracts.
+
+## Mumbai (BMC) fields
+
+One row in `data/bmc/quota_unquote_bmc_2007_2017.parquet` is one ward observed in one Praja survey wave: 1,361 rows, 227 wards in each of six waves (226 in 2014). Seat reservation is joined from `local_reservations` on council and ward number; every ward-wave matches exactly one seat.
+
+| name | source file | type | unit | universe | values | missing codes | missing kind | transformation | provenance |
+|---|---|---|---|---|---|---|---|---|---|
+| `council` | `local_reservations/.../praja_ward_ratings_2011_2018.csv` | integer | ward-wave | all rows | 2007, 2012, 2017 | none | none | the council whose term the wave falls in | deposit `term` |
+| `ward_no` | same | character | ward | all rows | 1 to 227 | none | none | none; 2017 numbers are a different geography | deposit `ward` |
+| `survey_year` | same | character | wave | all rows | 2011, 2013, 2014, 2015, 2016, 2018 | none | none | none | deposit `year` |
+| `an_women_reserved` | `ulb_ward_2012.csv`, `ulb_ward_2017.csv`, `bmc_seats_2007.csv` | integer | seat | all rows | 0, 1 | none allowed | none | the seat's reservation; never the councillor's sex | `01f_bmc_prepare.R` |
+| `raw_reservation` | same | character | seat | all rows | schema label (2012, 2017) or `W`/blank (2007) | blank means open in 2007 | none | none | `local_reservations` |
+| `raw_caste_reservation` | same | character | seat | 2012 and 2017 rows | NONE, SC, ST, BC | `NA` for 2007 | source has no caste roster for 2007 | none | `local_reservations` |
+| `deposit_women_reserved` | ratings | integer | seat | all rows | 0, 1 | none | none | the deposit's own flag, kept to test agreement with the treatment | deposit `genderquota` |
+| `prior_women_reserved` | derived | integer | ward | 2012 rows | 0, 1 | `NA` outside 2012 | not defined | the ward's 2007 reservation | `01f_bmc_prepare.R` |
+| `assignment_stratum` | derived | character | seat | all rows | `2007`, `2012__prior0`, `2012__prior1`, `2017` | none | none | the pool the lot was drawn within | `01f_bmc_prepare.R` |
+| `assignment_block` | derived | character | ward | all rows | `w<ward>` or `2017__w<ward>` | none | none | cluster for CR2; 2017 wards are new geographies | `01f_bmc_prepare.R` |
+| `councillor`, `councillor_woman`, `councillor_party`, `councillor_age`, `councillor_education`, `councillor_criminal_cases` | ratings | mixed | councillor | rows where the deposit names one | source values | blank name; affidavit fields absent in 2011 | source missingness | none | deposit |
+| `attendance_general_body`, `attendance_ward_committee`, `questions_total` | ratings | double | councillor-year | rows with BMC activity data | shares in 0 to 1; counts | `NA` where the deposit is blank | source missingness | attended / total meetings | deposit RTI fields |
+| `raw_rating_<item>` | ratings | double | ward-wave | items asked in the wave | 0 to 100, higher better | `NA` when not asked | not asked | none | Praja via the deposit |
+| `an_rating_satisfaction` | derived | double | ward-wave | 2013 to 2016 | 0 to 100 | `NA` in 2011 (not asked) and 2018 (inverted) | excluded by design | blanked where `rating_flags` says inverted | `01f_bmc_prepare.R` |
+| `an_rating_index14` | derived | double | ward-wave | all rows | mean of 14 within-wave z-scores | none | none | 13 service items plus corruption | `01f_bmc_prepare.R` |
+| `an_rating_index18` | derived | double | ward-wave | 2013 to 2018 | mean of 18 within-wave z-scores | `NA` in 2011 | items not asked | adds recall of party and name, accessibility, quality of life | `01f_bmc_prepare.R` |
+| `rating_flags` | ratings | character | ward-wave | all rows | blank or `satisfaction_inverted` | none | none | none | `local_reservations` parser |
+
+### Join contract, Mumbai
+
+- Left table: the Praja ward-wave table (1,361 rows). Right table: 681 seat rows, one per council and ward. The join must return every left row exactly once.
+- Treatment counts per council: 76 (2007), 115 (2012, one more than the statute; ward 172 is disputed with the deposit), 114 (2017).
+- The primary sample takes one wave per council (2011, 2016, 2018): 681 rows.

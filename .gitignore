@@ -17,6 +17,7 @@ dist/
 data/pai/*.parquet
 data/quota_raj/*.parquet
 data/quota_unquote/*.parquet
+data/bmc/*.parquet
 data/crosswalks/audit/*.csv
 data/crosswalks/audit/*.parquet
 

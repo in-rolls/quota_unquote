@@ -19,6 +19,7 @@ test:
 design:
 	Rscript scripts/98_validate_design.R
 	Rscript scripts/98b_validate_up_design.R
+	Rscript scripts/98c_validate_bmc_design.R
 
 paper:
 	cd ms && ./compile.sh

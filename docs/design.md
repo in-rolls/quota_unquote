@@ -100,3 +100,88 @@ PAI 2.0 Good Governance is the principal Rajasthan outcome, with PAI 1.0 treated
 separate replication because the indicator systems differ. Failed links remain missing and
 are never recoded as zero. Because exploratory Rajasthan outcome analysis began before the
 design was frozen, neither the estimates nor later robustness checks are confirmatory.
+
+## Mumbai (BMC): lottery-assigned women's seats
+
+Status: specified on September 3, 2026, after the same data had been examined
+in an exploratory pass (in `quota_elite_quality`) that produced a reserved-seat
+difference of about +0.05 SD on a 14-item index. The specification below was
+fixed before the pipeline in this repository was run, but it is not blind to
+that pass, so the Mumbai result is confirmatory only of the pipeline, not of a
+hypothesis formed in ignorance of the data.
+
+### Setting and data
+
+The Brihanmumbai Municipal Corporation has 227 single-member wards. Before each
+election the seats reserved for women are drawn by lot: one third of the seats
+in 2007, one half from 2012. The Praja Foundation surveys about 100 residents in
+every ward in each non-election year and publishes ward-level mean ratings of
+the sitting councillor on roads, water, schools, sanitation, corruption, and so
+on, each on a 0 to 100 scale with higher better.
+
+Seat reservation and ratings come from `local_reservations` (pinned in
+`data/manifest.yaml`): the 2012 and 2017 councils as schema slices, the 2007
+council as a supplemental file with a women's flag only, and the ratings as the
+CC0 replication deposit of Karekurve-Ramachandra and Lee (2025), Harvard
+Dataverse doi:10.7910/DVN/IO9SLQ. The deposit has six waves (2011, 2013 to 2016,
+2018); the 2019 wave used by Desai, Karekurve-Ramachandra and Montero (2024) is
+not public.
+
+### Identification and claim
+
+Because the reservation is drawn by lot, the comparison of reserved and open
+wards within the pool the draw was made from is a causal contrast, not a
+conditional association. The pool is the whole council in 2007 and 2017. The
+2012 draw excluded the 76 wards reserved in 2007 (none of them was reserved
+again), so its pool is the set of wards not reserved in 2007 and the stratum is
+council by prior status. Wards were redrawn before 2017, so no prior status is
+defined for that council.
+
+The outcome is residents' perception of the councillor's performance, not
+service delivery measured independently. It does not support claims about
+corruption or about the councillor's objective output.
+
+### Primary specification
+
+- Unit: one ward in one survey wave, one survey wave per council (2011 for the
+  2007 council, 2016 for 2012, 2018 for 2017), the last non-election year of
+  the term.
+- Treatment: `an_women_reserved`, 1 only when the seat's reservation names a
+  woman, from the `local_reservations` file, never from the councillor's sex.
+- Outcome: `an_rating_index14`, the mean of the 14 items present in every wave
+  (13 service items and corruption), each standardised within wave. The
+  satisfaction item is excluded from every index because it is inverted in the
+  2018 wave (its correlation with the 13 service items is +0.44 in 2016 and
+  -0.33 in 2018); the analysis copy of that item is blank in 2018 and the raw
+  value is kept.
+- Sample: wards in informative strata (all three councils are informative).
+- Estimator: unweighted OLS with assignment-stratum fixed effects.
+- Primary uncertainty: HC2 standard errors and 95% confidence interval.
+- Companion uncertainty: CR2 standard errors clustered by ward (ward numbers
+  before and after the 2017 redistricting are different geographies and are
+  different clusters).
+- Scale: control-group standard deviations of the index.
+- Randomization sensitivity: 4,999 fixed-count permutations within strata,
+  seed 20260903. Because the draw is a lottery, this is a test of the sharp null
+  rather than a sensitivity calculation.
+
+### Prespecified robustness
+
+1. The 18-item index (adding recall of party and name, accessibility, and
+   quality-of-life improvement) on the 2012 and 2017 councils, where those
+   items exist.
+2. Dropping the one ward (172 in 2012) where the source sheet and the deposit
+   disagree on the reservation.
+3. The raw difference without stratum fixed effects.
+
+Exploratory, reported without multiplicity adjustment and so labeled: the
+reserved-seat difference item by item, and on ward-committee attendance,
+general-body attendance, and questions asked in council.
+
+### Frozen inputs
+
+- `local_reservations` commit `4b14ed10dea82e498121bbfe0ddf64455ceb8c71`.
+- Four file hashes pinned in `data/manifest.yaml`.
+- Row contract: 1,361 ward-waves; 227 wards per wave except 226 in 2014; 76
+  women's seats in the 2007 council, 114 in 2017, and 115 in the 2012 source
+  sheet against 114 by statute (ward 172).

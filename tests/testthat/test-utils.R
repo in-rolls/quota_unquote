@@ -14,9 +14,13 @@ test_that("assert_unique rejects duplicate business keys", {
     expect_invisible(assert_unique(data.frame(key = c("a", "b")), "key", "fixture"))
 })
 
-test_that("the source manifest pins both inputs", {
+test_that("the source manifest pins every input", {
     sources <- manifest()$upstream
-    expect_true(all(c("pai", "quota_raj") %in% names(sources)))
+    expect_true(all(c("pai", "quota_raj", "local_reservations") %in% names(sources)))
+    expect_match(
+        sources$local_reservations$files[["data/maharashtra/ulb_ward_2012.csv"]],
+        "^[0-9a-f]{64}$"
+    )
     expect_match(sources$pai$files$gp_metadata.csv, "^[0-9a-f]{64}$")
     expect_match(
         sources$quota_raj$files[["data/raj/shrug_gp_raj_15_20_block.parquet"]],

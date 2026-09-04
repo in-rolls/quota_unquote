@@ -19,3 +19,12 @@ upstream:
     sibling: ../local_elections_up
     files:
       data/fin/up_gp_elections_standardized.parquet: 986893d620e3d1d0d46e3d306909cc7acf3ccbae383346e4f47b39de9f62fe76
+  local_reservations:
+    repo: in-rolls/local_reservations
+    ref: 4b14ed10dea82e498121bbfe0ddf64455ceb8c71
+    sibling: ../local_elections
+    files:
+      data/maharashtra/ulb_ward_2012.csv: 2a3efe26109358564cc0697d972749b8261add3f39bf8c5f70e4b2db518b4816
+      data/maharashtra/ulb_ward_2017.csv: 41d8271d52e7b51c0880fd6ca2589c37b4574e23889ae0f0b0ed1ad3f2cde1f4
+      data/maharashtra/mumbai/bmc_seats_2007.csv: 50531b3f0a1f599957abb15e8a5dd5919f1ce5b6b7d2a7fc12732ac6936d39ee
+      data/maharashtra/mumbai/praja_ward_ratings_2011_2018.csv: 2f4bbbadd1783e84e57d55bce8a29764f37e89c5e40b0b8522fe0d4bc2cc1032

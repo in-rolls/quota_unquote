@@ -1,5 +1,5 @@
 # 99_run_all.R
-# Run the Rajasthan and UP preparation, linkage, and analysis pipeline.
+# Run the Rajasthan, UP, and Mumbai preparation, linkage, and analysis pipeline.
 # Output: prepared data, linkage audits, review queues, estimates, and a log.
 
 library(here)
@@ -66,6 +66,7 @@ run_script("01b_raj_treatment_prepare.R")
 run_script("01c_pai2_group_audit.R")
 run_script("01d_up_treatment_prepare.R")
 run_script("01e_up_pai_prepare.R")
+run_script("01f_bmc_prepare.R")
 
 message("\n### PHASE 2: EXACT LINKAGE AND REVIEW QUEUES ###")
 run_script("02a_raj_pai_join.R")
@@ -79,10 +80,12 @@ run_script("02c_up_pai_join.R")
 message("\n### PHASE 3: DESIGN GATES ###")
 run_script("98_validate_design.R")
 run_script("98b_validate_up_design.R")
+run_script("98c_validate_bmc_design.R")
 
 message("\n### PHASE 4: ESTIMATION ###")
 run_script("03a_raj_pai_effects.R")
 run_script("03b_up_pai_effects.R")
 run_script("03c_pai_comparison.R")
+run_script("03d_bmc_praja_effects.R")
 
-log_msg("Rajasthan and UP PAI pipeline completed.")
+log_msg("Rajasthan, UP, and Mumbai pipeline completed.")

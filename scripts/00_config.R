@@ -10,8 +10,22 @@ PAI_YEAR_PRIMARY <- "2023-2024"
 PAI_YEAR_REPLICATION <- "2022-2023"
 PAI_T8_SLUG <- "t8_panchayat_with_good_governance"
 
+# Mumbai (BMC): three councils, one Praja survey wave per council in the primary
+# sample, the last non-election year of each term.
+BMC_COUNCILS <- c(2007L, 2012L, 2017L)
+BMC_PRIMARY_WAVES <- c("2011", "2016", "2018")
+BMC_WOMEN_SEATS <- c("2007" = 76L, "2012" = 114L, "2017" = 114L)
+BMC_SERVICE_ITEMS <- c(
+    "roads", "traffic", "gardens", "transport", "hospitals", "schools", "power",
+    "water", "flooding", "pollution", "crime", "law_order", "sanitation"
+)
+BMC_INDEX14_ITEMS <- c(BMC_SERVICE_ITEMS, "corruption")
+BMC_INDEX18_ITEMS <- c(
+    BMC_INDEX14_ITEMS, "recall_party", "recall_name", "accessibility", "quality_of_life"
+)
+
 DICT_TREAT <- c(
-    "an_women_reserved" = "Women-reserved sarpanch seat"
+    "an_women_reserved" = "Women-reserved seat"
 )
 
 theme_pub <- function(base_size = 11, base_family = "") {
