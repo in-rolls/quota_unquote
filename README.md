@@ -56,13 +56,13 @@ second observation of the same outcome.
 Both PAI vintages carry LGD Gram Panchayat codes in [PAI release v0.2.0](https://github.com/in-rolls/pai/releases/tag/v0.2.0),
 so each wave joins directly on the reviewed election-to-LGD link. Rajasthan's election
 panel has an LGD code for 4,729 of its 7,882 GPs; the rest use exact normalized names within
-manually reviewed crosswalks for reorganized districts and blocks. Fuzzy matches enter the
-analysis only after blinded clerical review. Failed links remain missing and are never coded
-as zero.
+manually reviewed crosswalks for reorganized districts and blocks. Fuzzy name proposals
+never enter the primary link; a reviewed fuzzy link could only feed a robustness variant.
+Failed links remain missing and are never coded as zero.
 
 | State | Election GPs | PAI 2.0 linked | Link rate | Estimation sample |
 |---|---:|---:|---:|---:|
-| Uttar Pradesh | 49,773 | 38,391 | 77.1% | 38,280 |
+| Uttar Pradesh | 49,773 | 38,388 | 77.1% | 38,277 |
 | Rajasthan | 7,882 | 5,723 | 72.6% | 5,422 |
 | Mumbai (BMC) | 681 ward seats | 681 rated | 100% | 681 |
 
@@ -78,7 +78,7 @@ reports.
 
 | State | Outcome | Estimate | 95% CI | Control SDs | Sample |
 |---|---|---:|---:|---:|---:|
-| Uttar Pradesh | PAI 2.0 | 0.07 | [-0.22, 0.36] | 0.004 | 38,280 |
+| Uttar Pradesh | PAI 2.0 | 0.07 | [-0.22, 0.36] | 0.004 | 38,277 |
 | Rajasthan | PAI 2.0 | -0.05 | [-0.59, 0.49] | -0.004 | 5,422 |
 | Mumbai (BMC) | Praja 14-item rating index | 0.05 | [-0.08, 0.18] | 0.067 | 681 |
 

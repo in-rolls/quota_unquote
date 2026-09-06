@@ -155,13 +155,52 @@ panel_groups <- panel |>
     select(-"exact_group", -"override_district_std", -"override_block_std")
 
 assert_unique(pai_2, "pai_gp_code", "PAI 2.0 GP codes")
-code_links <- panel_groups |>
+# A code whose PAI name is not the LGD name is doubtful (a portal code swap or
+# a rename); such links are dropped, not adjudicated.
+code_candidates <- panel_groups |>
     filter(!is.na(.data$raw_lgd_gp_code)) |>
     inner_join(
-        pai_2 |> select("pai_row_key", "pai_gp_code"),
+        pai_2 |> select("pai_row_key", "pai_gp_code", "pai_gp_name", "pai_gp_name_std"),
         by = join_by(raw_lgd_gp_code == pai_gp_code),
         relationship = "many-to-one"
     ) |>
+    mutate(name_agrees = .data$lgd_gp_name_std == .data$pai_gp_name_std)
+code_name_conflicts <- bind_rows(
+    joined_1 |>
+        filter(
+            !is.na(.data$pai_good_governance_score),
+            normalize_name(.data$pai_gp_name) != .data$lgd_gp_name_std
+        ) |>
+        transmute(
+            pai_year = PAI_YEAR_REPLICATION,
+            election_gp_key = .data$election_gp_key,
+            raw_lgd_gp_code = .data$raw_lgd_gp_code,
+            raw_lgd_gp_name = .data$raw_lgd_gp_name,
+            pai_gp_name = .data$pai_gp_name,
+            pai_row_key = .data$pai_row_key
+        ),
+    code_candidates |>
+        filter(!.data$name_agrees) |>
+        transmute(
+            pai_year = PAI_YEAR_PRIMARY,
+            election_gp_key = .data$election_gp_key,
+            raw_lgd_gp_code = .data$raw_lgd_gp_code,
+            raw_lgd_gp_name = .data$raw_lgd_gp_name,
+            pai_gp_name = .data$pai_gp_name,
+            pai_row_key = .data$pai_row_key
+        )
+)
+joined_1 <- joined_1 |>
+    mutate(
+        drop_link = .data$election_gp_key %in%
+            code_name_conflicts$election_gp_key[
+                code_name_conflicts$pai_year == PAI_YEAR_REPLICATION
+            ],
+        across(starts_with("pai_") & !all_of("pai_year"), \(x) if_else(drop_link, NA, x))
+    ) |>
+    select(-"drop_link")
+code_links <- code_candidates |>
+    filter(.data$name_agrees) |>
     add_count(.data$pai_row_key, name = "right_candidates") |>
     filter(.data$right_candidates == 1L) |>
     transmute(
@@ -361,6 +400,10 @@ write_parquet_receipt(
 write_parquet_receipt(
     unmatched_right,
     here("data", "crosswalks", "audit", "pai2_unmatched_right.parquet")
+)
+write_csv_receipt(
+    code_name_conflicts,
+    here("data", "crosswalks", "audit", "pai_code_name_conflicts.csv")
 )
 write_csv_receipt(
     coverage,

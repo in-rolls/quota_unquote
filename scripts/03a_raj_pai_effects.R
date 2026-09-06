@@ -65,9 +65,34 @@ randomization_p_value <- function(data, repetitions, seed) {
     )
 }
 
+CODE_LINK_METHODS <- c("direct_lgd_code", "direct_lgd_gp_code")
+PRIMARY_LINK_METHODS <- c(
+    CODE_LINK_METHODS, "exact_official_gp_name", "exact_election_gp_name"
+)
+
+informative_sample <- function(data) {
+    informative <- data |>
+        group_by(.data$assignment_stratum) |>
+        summarise(
+            treatment_levels = n_distinct(.data$an_women_reserved),
+            .groups = "drop"
+        ) |>
+        filter(.data$treatment_levels == 2L)
+    list(
+        data = data |> semi_join(informative, by = join_by(assignment_stratum)),
+        strata = nrow(informative)
+    )
+}
+
+# Reviewed fuzzy name links, if any are ever approved, are excluded from the
+# primary sample; they could only feed a separate robustness variant.
 estimate_year <- function(joined, target_year, seed) {
     analysis <- joined |>
-        filter(.data$pai_year == .env$target_year, .data$pai_available) |>
+        filter(
+            .data$pai_year == .env$target_year,
+            .data$pai_available,
+            .data$pai_link_method %in% PRIMARY_LINK_METHODS
+        ) |>
         mutate(
             assignment_block = paste(
                 .data$raw_district_2020,
@@ -81,16 +106,18 @@ estimate_year <- function(joined, target_year, seed) {
         stop("A PAI-year sample exceeds the election-panel row count", call. = FALSE)
     }
 
-    informative <- analysis |>
-        group_by(.data$assignment_stratum) |>
-        summarise(
-            treatment_levels = n_distinct(.data$an_women_reserved),
-            .groups = "drop"
-        ) |>
-        filter(.data$treatment_levels == 2L)
+    informative <- informative_sample(analysis)
+    analysis <- informative$data
 
-    analysis <- analysis |>
-        semi_join(informative, by = join_by(assignment_stratum))
+    code_only <- informative_sample(
+        analysis |> filter(.data$pai_link_method %in% CODE_LINK_METHODS)
+    )$data
+    code_model <- lm_robust(
+        pai_good_governance_score ~ an_women_reserved,
+        data = code_only,
+        fixed_effects = ~ assignment_stratum,
+        se_type = "HC2"
+    )
 
     raw_model <- lm_robust(
         pai_good_governance_score ~ an_women_reserved,
@@ -122,6 +149,7 @@ estimate_year <- function(joined, target_year, seed) {
     strata <- extract_term(strata_model, "an_women_reserved")
     block <- extract_term(block_model, "an_women_reserved")
     precision <- extract_term(precision_model, "an_women_reserved")
+    code <- extract_term(code_model, "an_women_reserved")
     randomization <- randomization_p_value(
         analysis,
         repetitions = RI_REPETITIONS,
@@ -148,7 +176,7 @@ estimate_year <- function(joined, target_year, seed) {
             "PAI 1.0 replication"
         ),
         n = nrow(analysis),
-        informative_strata = nrow(informative),
+        informative_strata = informative$strata,
         assignment_blocks = n_distinct(analysis$assignment_block),
         control_mean = mean(
             analysis$pai_good_governance_score[
@@ -170,6 +198,10 @@ estimate_year <- function(joined, target_year, seed) {
         effect_sd = strata[["estimate"]] / control_sd,
         hc2_conf_low_sd = strata[["conf_low"]] / control_sd,
         hc2_conf_high_sd = strata[["conf_high"]] / control_sd,
+        code_link_n = nrow(code_only),
+        code_link_effect = code[["estimate"]],
+        code_link_conf_low = code[["conf_low"]],
+        code_link_conf_high = code[["conf_high"]],
         randomization_p_value = randomization$p_value,
         randomization_repetitions = randomization$repetitions
     )
@@ -215,6 +247,14 @@ write_tex_macros(
         RajPaiTwoCILowSD = format_number(primary$hc2_conf_low_sd, 3L),
         RajPaiTwoCIHighSD = format_number(primary$hc2_conf_high_sd, 3L),
         RajPaiTwoRIP = format_number(primary$randomization_p_value, 3L),
+        RajPaiTwoCodeLinkN = format(
+            primary$code_link_n,
+            big.mark = ",",
+            scientific = FALSE
+        ),
+        RajPaiTwoCodeLinkDifference = format_number(primary$code_link_effect),
+        RajPaiTwoCodeLinkCILow = format_number(primary$code_link_conf_low),
+        RajPaiTwoCodeLinkCIHigh = format_number(primary$code_link_conf_high),
         RajPaiOneDifference = format_number(replication$effect_points),
         RajPaiOneCILow = format_number(replication$hc2_conf_low),
         RajPaiOneCIHigh = format_number(replication$hc2_conf_high),
@@ -255,7 +295,8 @@ tex <- c(
         "The effect is from an unweighted regression with assignment-stratum fixed ",
         "effects and HC2 confidence intervals. RI permutes the observed number of ",
         "women-reserved seats within each informative district by Panchayat Samiti ",
-        "by caste stratum. PAI 1.0 and PAI 2.0 are separate outcomes.}"
+        "by caste stratum. PAI 1.0 and PAI 2.0 are separate outcomes. Estimates ",
+        "restricted to direct LGD-code links are in the CSV.}"
     )
 )
 dir.create(here("tabs"), showWarnings = FALSE)

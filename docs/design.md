@@ -89,16 +89,16 @@ What changed: the outcome file and the join key. What did not: the estimand, tre
 
 | | Frozen sample | Complete extract |
 |---|---:|---:|
-| Linked UP GPs (PAI 2.0) | 23,921 (48.1%) | 38,391 (77.1%) |
+| Linked UP GPs (PAI 2.0) | 23,921 (48.1%) | 38,388 (77.1%) |
 | Link rate, women-reserved vs other | 48.0% vs 48.1% | 76.8% vs 77.3% |
-| Informative-strata sample | 23,763 | 38,280 |
+| Informative-strata sample | 23,763 | 38,277 |
 | Informative strata | 1,511 | 2,224 |
-| PAI 2.0 difference, points (HC2 95% CI) | -0.042 (-0.396, 0.313) | 0.069 (-0.222, 0.359) |
-| In control-group SDs | -0.002 (-0.022, 0.018) | 0.004 (-0.012, 0.020) |
-| Fixed-count randomization p | 0.818 | 0.641 |
+| PAI 2.0 difference, points (HC2 95% CI) | -0.042 (-0.396, 0.313) | 0.067 (-0.223, 0.358) |
+| In control-group SDs | -0.002 (-0.022, 0.018) | 0.004 (-0.013, 0.020) |
+| Fixed-count randomization p | 0.818 | 0.648 |
 | PAI 1.0 difference, points (HC2 95% CI) | -0.097 (-0.404, 0.210) | -0.051 (-0.345, 0.242) |
 
-The unlinked 11,382 winners are the rows the election release could not link to an LGD GP, not rows missing from PAI. Of the 53,771 UP rows linked by code across both waves, 3 carry a PAI GP name that differs from the LGD name (two in Mankapur, Gonda, one in Chahniya, Chandauli); they are kept, since the code is the reviewed key.
+The unlinked 11,385 winners are the rows the election release could not link to an LGD GP, not rows missing from PAI. A code link is accepted only when the PAI GP name equals the LGD GP name after normalization. Of the 53,771 UP rows linkable by code across both waves, 3 fail this test (two in Mankapur, Gonda, whose PAI names are swapped relative to LGD, and one in Chahniya, Chandauli); they are dropped as doubtful and listed in `up_pai_code_name_conflicts.csv`. No Rajasthan code link fails it.
 
 ## Deviations and implementation notes
 
@@ -120,7 +120,10 @@ population rules, boundary changes, or administrative discretion could violate t
 
 PAI 2.0 Good Governance is the principal Rajasthan outcome, with PAI 1.0 treated as a
 separate replication because the indicator systems differ. Failed links remain missing and
-are never recoded as zero. Because exploratory Rajasthan outcome analysis began before the
+are never recoded as zero. The primary sample uses direct LGD-code and exact-name links;
+reviewed fuzzy links, if any are approved, are a robustness variant only, and
+`tabs/raj_pai_effects.csv` also reports the estimate restricted to direct-code links. Because
+exploratory Rajasthan outcome analysis began before the
 design was frozen, neither the estimates nor later robustness checks are confirmatory.
 
 ## Mumbai (BMC): lottery-assigned women's seats

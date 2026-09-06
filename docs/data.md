@@ -55,6 +55,13 @@ One row in each analysis-ready file is one election GP observed against one PAI 
 
 ## Join contract
 
+Linkage follows the precision-first rules of [`preclink`](https://github.com/finite-sample/preclink)
+and the `quota` replication: exact normalized composite keys within a geographic block, one
+election row to at most one PAI row, keys that are ambiguous on either side dropped rather
+than adjudicated, doubtful links (a code whose PAI name is not the LGD name) dropped rather
+than kept, and fuzzy proposals confined to a robustness variant. Every dropped or unmatched
+row is written to an audit file, and a failed link is missing, never zero.
+
 ### Rajasthan PAI 1.0
 
 The left table is the 7,882-row Rajasthan election panel, keyed uniquely by
@@ -72,9 +79,10 @@ statewide block names require explicit evidence.
 
 Within approved groups, exact normalized official GP names are tried first, followed by exact
 normalized election names. Preclink Jaro-Winkler scores, a 0.85 threshold, a 0.05 margin, and
-Hungarian assignment produce proposals only. A reviewer must approve a proposal before it
-enters the analysis crosswalk. Accepted links are one to one and unmatched outcomes remain
-missing.
+Hungarian assignment produce proposals only. Since PAI carries LGD codes, a reviewed fuzzy
+link is excluded from the primary sample and could only feed a robustness variant; the
+analysis also reports a variant restricted to direct-code links. Accepted links are one to
+one and unmatched outcomes remain missing.
 
 ### Uttar Pradesh election and PAI joins
 
@@ -82,7 +90,9 @@ The canonical `local_elections_up` release supplies exactly 49,773 2021 GP winne
 This repository imports its names, reservation recodes, LGD links, and collision flags rather
 than maintaining parallel overrides.
 
-Both waves join accepted election-to-LGD GP codes directly. Rows without a code then try
+Both waves join accepted election-to-LGD GP codes directly, keeping a code link only when
+the PAI GP name equals the LGD GP name after normalization; the 3 UP conflicts are listed in
+`up_pai_code_name_conflicts.csv` and left unmatched. Rows without a code then try
 exact normalized official GP names within district and LGD block, then exact normalized
 election GP names among unused rows; on PAI release v0.2.0 these passes add no links.
 Accepted links must be one to one. Each wave preserves all 49,773 election rows,

@@ -51,7 +51,7 @@ UP election names, reservations, winner sex, and LGD links are standardized once
 
 Both PAI vintages report LGD Gram Panchayat codes, so each wave joins directly on the reviewed election-to-LGD link. In UP, exact normalized official GP names within district and LGD block, then exact election names, are tried for rows without a code; they add no links. In Rajasthan, where 4,729 of 7,882 panel rows carry a code, the linkage also maps old district and block groups to the post-reorganization PAI geography through a reviewed crosswalk.
 
-The matcher never decides a reviewed analysis link. It writes candidate pairs, scores, and one-to-one proposals to an audit directory. Reviewers inspect those pairs without reservation status or PAI scores and move only approved links into the active crosswalk. A failed link remains missing rather than becoming a zero. In UP PAI 2.0, coverage is \UpPaiTwoWomenMatchPct\% for women-reserved seats and \UpPaiTwoOpenMatchPct\% for other seats.
+The fuzzy matcher never decides a primary link. It writes candidate pairs, scores, and one-to-one proposals to an audit directory; a reviewer who approves one, without seeing reservation status or PAI scores, adds it to a robustness variant only. A failed link remains missing rather than becoming a zero. In UP PAI 2.0, coverage is \UpPaiTwoWomenMatchPct\% for women-reserved seats and \UpPaiTwoOpenMatchPct\% for other seats.
 
 \Needspace{12\baselineskip}
 \section{UP results}
@@ -71,7 +71,7 @@ The PAI 1.0 replication agrees. Its conditional difference is \UpPaiOneDifferenc
 \Needspace{18\baselineskip}
 \section{Rajasthan results}
 
-The exploratory Rajasthan result also sits near zero. The PAI 2.0 estimate is \RajPaiTwoDifference\ points (95\% CI: \RajPaiTwoCILow, \RajPaiTwoCIHigh), or \RajPaiTwoDifferenceSD\ standard deviations (95\% CI: \RajPaiTwoCILowSD, \RajPaiTwoCIHighSD). The PAI 1.0 replication is \RajPaiOneDifference\ points (95\% CI: \RajPaiOneCILow, \RajPaiOneCIHigh), or \RajPaiOneDifferenceSD\ standard deviations. These estimates were produced before the Rajasthan design was frozen, so they are exploratory.
+The exploratory Rajasthan result also sits near zero. The PAI 2.0 estimate is \RajPaiTwoDifference\ points (95\% CI: \RajPaiTwoCILow, \RajPaiTwoCIHigh), or \RajPaiTwoDifferenceSD\ standard deviations (95\% CI: \RajPaiTwoCILowSD, \RajPaiTwoCIHighSD). The PAI 1.0 replication is \RajPaiOneDifference\ points (95\% CI: \RajPaiOneCILow, \RajPaiOneCIHigh), or \RajPaiOneDifferenceSD\ standard deviations. Restricting PAI 2.0 to the \RajPaiTwoCodeLinkN\ GPs linked by LGD code gives \RajPaiTwoCodeLinkDifference\ points (95\% CI: \RajPaiTwoCodeLinkCILow, \RajPaiTwoCodeLinkCIHigh). These estimates were produced before the Rajasthan design was frozen, so they are exploratory.
 
 \begin{figure}[htbp]
 \centering
