@@ -2,8 +2,10 @@
 
 Do seats reserved for women change how local governments govern? In the linked Uttar
 Pradesh and Rajasthan samples, women-reserved seats are associated with essentially no
-difference in Panchayat Advancement Index (PAI) Good Governance scores. The UP estimate
-is -0.04 points, with a 95% confidence interval from -0.40 to 0.31. The Rajasthan estimate
+difference in the Panchayat Advancement Index (PAI) Good Governance score, a 0 to 100 index
+of whether the panchayat held its meetings, filed its plan and accounts, and published its
+beneficiary and works lists. The UP estimate
+is 0.07 points, with a 95% confidence interval from -0.22 to 0.36. The Rajasthan estimate
 is -0.05 points, with an interval from -0.59 to 0.49. In Mumbai, where the city council's
 women's seats are drawn by lot, residents rate councillors in reserved wards 0.07
 control-group standard deviations higher on a 14-item index, with an interval from -0.10
@@ -49,39 +51,70 @@ The project joins four sources:
   the CC0 replication deposit of Karekurve-Ramachandra and Lee (2025),
   [doi:10.7910/DVN/IO9SLQ](https://doi.org/10.7910/DVN/IO9SLQ).
 
-PAI 2.0 Good Governance for 2023-24 is the primary outcome. PAI 1.0 uses different
-indicators and scoring rules, so its 2022-23 score is a separate replication rather than a
-second observation of the same outcome.
+PAI 2.0 Good Governance for 2023-24 is the primary outcome. The Ministry of Panchayati Raj
+scores each Gram Panchayat on nine themes; Good Governance (theme 8) is built from equally
+weighted indicators that the panchayat reports on the [PAI portal](https://pai.gov.in) and
+the Gram Sabha and district validate. In PAI 2.0, 23 of its 26 indicators are yes/no
+checks: was a Gram Sabha, a Mahila Sabha and a Bal Sabha held; do standing committees meet;
+was the development plan uploaded to eGramSwaraj by 31 March; were provisional accounts
+closed within 15 days of year end and read out in the Gram Sabha; are beneficiary and works
+lists displayed and approved; is there a grievance system, online payment, online services,
+a co-located common service centre, GeM procurement, a disaster plan; is the office open.
+The other three are rates: growth in own-source revenue, and the shares of planned
+activities initiated and completed. So the primary outcome mostly records whether required
+procedures were carried out and documented, and a null means women-reserved panchayats are
+no more or less likely to hold the meetings, file the plan, close the books, publish the
+lists, and grow their own revenue.
 
-PAI 1.0 includes LGD Gram Panchayat codes and joins directly. PAI 2.0 requires exact
-normalized names within district and block. The Rajasthan linkage also uses manually
-reviewed crosswalks for reorganized districts and blocks. Fuzzy matches enter the analysis
-only after blinded clerical review. Failed links remain missing and are never coded as zero.
+| Version | Fiscal year | Indicators | Rates | Yes/no checks | Shared with the other version |
+|---|---|---:|---:|---:|---:|
+| PAI 1.0 | 2022-23 | 62 | 25 | 37 | 10 |
+| PAI 2.0 | 2023-24 | 26 | 3 | 23 | 10 |
+
+PAI 1.0's theme 8 was closer to performance: a share of grievances redressed, of services
+delivered within the Citizens' Charter time, of works completed and geo-tagged, of issues
+raised by SC/ST, women, elderly and disabled residents acted on, and whether the social
+audit report was uploaded. PAI 2.0 dropped most of these rates for compliance checks, and
+only 10 indicators appear in both, so the 2022-23 score is a separate replication rather
+than a second observation of the same outcome. The full lists, fetched from the portal's
+indicator browser, are in [`docs/pai_theme8_indicators.csv`](docs/pai_theme8_indicators.csv).
+
+Both PAI vintages carry LGD Gram Panchayat codes in [PAI release v0.2.0](https://github.com/in-rolls/pai/releases/tag/v0.2.0),
+so each wave joins directly on the reviewed election-to-LGD link. Rajasthan's election
+panel has an LGD code for 4,729 of its 7,882 GPs; the rest use exact normalized names within
+manually reviewed crosswalks for reorganized districts and blocks. Fuzzy name proposals
+never enter the primary link; a reviewed fuzzy link could only feed a robustness variant.
+Failed links remain missing and are never coded as zero.
 
 | State | Election GPs | PAI 2.0 linked | Link rate | Estimation sample |
 |---|---:|---:|---:|---:|
-| Uttar Pradesh | 49,773 | 23,921 | 48.1% | 23,763 |
+| Uttar Pradesh | 49,773 | 38,388 | 77.1% | 38,277 |
 | Rajasthan | 7,882 | 5,723 | 72.6% | 5,422 |
 | Mumbai (BMC) | 681 ward seats | 681 rated | 100% | 681 |
 
-UP link rates are 48.0% for women-reserved seats and 48.1% for other seats. Rajasthan rates
+UP link rates are 76.8% for women-reserved seats and 77.3% for other seats. Rajasthan rates
 are 73.0% and 72.3%, respectively. Similar rates reduce concern about differential linkage,
-but they do not recover unlinked Gram Panchayats. The current portal extract is incomplete:
-the [official PAI 2.0 release](https://www.pib.gov.in/PressReleasePage.aspx?PRID=2256616&lang=1&reg=3)
-reports validated submissions from all 57,678 UP Gram Panchayats.
+but they do not recover unlinked Gram Panchayats. In UP the ceiling is the election release,
+not PAI: 38,397 of the 49,773 winners carry a reviewed LGD code, and PAI 2.0 scores all
+57,678 UP Gram Panchayats, as the
+[official release](https://www.pib.gov.in/PressReleasePage.aspx?PRID=2256616&lang=1&reg=3)
+reports.
 
 ## Key results
 
 | State | Outcome | Estimate | 95% CI | Control SDs | Sample |
 |---|---|---:|---:|---:|---:|
-| Uttar Pradesh | PAI 2.0 | -0.04 | [-0.40, 0.31] | -0.002 | 23,763 |
+| Uttar Pradesh | PAI 2.0 | 0.07 | [-0.22, 0.36] | 0.004 | 38,277 |
 | Rajasthan | PAI 2.0 | -0.05 | [-0.59, 0.49] | -0.004 | 5,422 |
 | Mumbai (BMC) | Praja 14-item rating index | 0.05 | [-0.08, 0.18] | 0.067 | 681 |
 
-The UP confidence interval excludes improvements larger than 0.018 control-group standard
-deviations in the linked, informative-strata sample. Its PAI 1.0 estimate is -0.10 points
-(95% CI: -0.40, 0.21). Restricting PAI 2.0 to exact election-to-LGD links, clustering by
+The UP confidence interval excludes improvements larger than 0.020 control-group standard
+deviations in the linked, informative-strata sample. Its PAI 1.0 estimate is -0.05 points
+(95% CI: -0.34, 0.24). Restricting PAI 2.0 to exact election-to-LGD links, clustering by
 block, and using fixed-count randomization inference all yield the same near-zero pattern.
+The frozen specification was first estimated on a 48% linked sample drawn from an
+incomplete PAI extract, giving -0.04 points (95% CI: -0.40, 0.31); the
+[design record](docs/design.md) keeps that result beside the re-estimation.
 
 The exploratory Rajasthan PAI 1.0 estimate is 0.25 points (95% CI: -0.26, 0.76). The
 underlying values are generated by the analysis scripts and stored in
@@ -109,10 +142,14 @@ The UP and Rajasthan comparisons are not yet causal. Reservation laws establish 
 and minimum shares, but they do not by themselves prove random allocation within the
 reconstructed strata. Mumbai's draw is a lottery, so its contrast is causal for the seat.
 
-PAI cannot answer whether women leaders reduce corruption. That claim requires direct
-outcomes such as leakage, audit findings, procurement anomalies, or beneficiary fraud.
+PAI cannot answer whether women leaders reduce corruption. Its Good Governance theme does
+ask about procurement through GeM, closing the accounts, and Gram Sabha approval of
+beneficiary lists, but as checks that a procedure exists, not as measures of leakage,
+audit findings, procurement anomalies, or beneficiary fraud. Those outcomes are required for
+a corruption claim.
 
-Incomplete portal coverage restricts the result to linked Gram Panchayats. Similar coverage
+Linkage restricts the result to the three quarters of UP Gram Panchayats with a reviewed
+LGD code, and to linked Rajasthan GPs. Similar coverage
 by treatment is useful evidence against one selection mechanism, not evidence for the
 missing population.
 
@@ -134,12 +171,13 @@ git clone https://github.com/in-rolls/quota_unquote.git
 cd quota_unquote
 R -e "renv::restore()"
 uv sync --all-groups
-PAI_DATA_DIR=/path/to/pai/consolidated Rscript scripts/99_run_all.R
+PAI_RELEASE_FILE=/path/to/pai_gp.parquet Rscript scripts/99_run_all.R
 make paper
 ```
 
-`PAI_DATA_DIR` must contain the pinned `gp_metadata.csv` and `gp_scores_long.csv` files
-from the [PAI Dataverse release](https://doi.org/10.7910/DVN/FRUKWS). The pipeline reads the
+`PAI_RELEASE_FILE` must be the pinned `pai_gp.parquet` from
+[PAI release v0.2.0](https://github.com/in-rolls/pai/releases/tag/v0.2.0), also on
+[Hugging Face](https://huggingface.co/datasets/soodoku/pai/tree/v0.2.0). The pipeline reads the
 Rajasthan, UP and Mumbai files from sibling repositories by default. `QUOTA_RAJ_PANEL`,
 `UP_ELECTION_FILE` and `LOCAL_RESERVATIONS_DIR` can point to other copies of the pinned
 files. Expected paths, source

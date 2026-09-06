@@ -67,7 +67,8 @@ functional-form search is primary. Any such result must be labeled exploratory.
 - `local_elections_up` commit `3e19684df019be328664f2f98362d789874855d9`
 - Standardized election SHA-256
   `986893d620e3d1d0d46e3d306909cc7acf3ccbae383346e4f47b39de9f62fe76`
-- PAI consolidated files are pinned in `data/manifest.yaml`.
+- PAI consolidated files were pinned in `data/manifest.yaml` at the freeze (an incomplete
+  portal extract; see the re-estimation section below).
 - UP joined-file row contract: 49,773 election rows per PAI wave.
 
 ## Post-freeze results
@@ -78,9 +79,30 @@ The primary PAI 2.0 conditional difference is -0.0419 points with an HC2 95% con
 
 The analysis supports a precise null conditional association in the linked informative-strata sample. It does not establish a causal effect or an effect on corruption.
 
+## Re-estimation on the complete PAI extract
+
+Status: run on September 5, 2026, after the frozen-sample results above were known. It is a re-estimation of the unchanged frozen specification on new outcome data, not a blind replication.
+
+The PAI extract pinned at the freeze covered 35,979 of 57,678 UP Gram Panchayats for 2023/24 and carried no LGD codes for PAI 2.0, so PAI 2.0 was linked by exact names and 48.1% of the 2021 winners were linked. PAI release v0.2.0 (`in-rolls/pai` `af7db25`, pinned in `data/manifest.yaml`) scores every UP GP in both vintages, state totals match the Ministry's published counts, and every row carries an LGD code. Both waves now join on the reviewed election-to-LGD code; the exact-name passes remain in the code and add no links.
+
+What changed: the outcome file and the join key. What did not: the estimand, treatment coding, strata, sample rule, estimator, interval methods, exact-link restriction, seed, and randomization count.
+
+| | Frozen sample | Complete extract |
+|---|---:|---:|
+| Linked UP GPs (PAI 2.0) | 23,921 (48.1%) | 38,388 (77.1%) |
+| Link rate, women-reserved vs other | 48.0% vs 48.1% | 76.8% vs 77.3% |
+| Informative-strata sample | 23,763 | 38,277 |
+| Informative strata | 1,511 | 2,224 |
+| PAI 2.0 difference, points (HC2 95% CI) | -0.042 (-0.396, 0.313) | 0.067 (-0.223, 0.358) |
+| In control-group SDs | -0.002 (-0.022, 0.018) | 0.004 (-0.013, 0.020) |
+| Fixed-count randomization p | 0.818 | 0.648 |
+| PAI 1.0 difference, points (HC2 95% CI) | -0.097 (-0.404, 0.210) | -0.051 (-0.345, 0.242) |
+
+The unlinked 11,385 winners are the rows the election release could not link to an LGD GP, not rows missing from PAI. A code link is accepted only when the PAI GP name equals the LGD GP name after normalization. Of the 53,771 UP rows linkable by code across both waves, 3 fail this test (two in Mankapur, Gonda, whose PAI names are swapped relative to LGD, and one in Chahniya, Chandauli); they are dropped as doubtful and listed in `up_pai_code_name_conflicts.csv`. No Rajasthan code link fails it.
+
 ## Deviations and implementation notes
 
-- No frozen estimand, outcome, sample rule, weighting rule, fixed effect, interval method, exact-link restriction, or randomization count changed after unblinding.
+- No frozen estimand, outcome, sample rule, weighting rule, fixed effect, interval method, exact-link restriction, or randomization count changed after unblinding. The outcome source file changed once, to the complete PAI extract, as recorded above.
 - The CR2 companion uses the Frisch-Waugh-Lovell within-stratum transformation followed by `clubSandwich::vcovCR(type = "CR2")`. This is algebraically equivalent to the frozen fixed-effect regression and reproduces the Rajasthan `estimatr::lm_robust` coefficient and CR2 standard error.
 - The fixed-count randomization sampler was implemented in Rcpp because materializing the full assignment matrix would require roughly one gigabyte. The statistic, number of draws, seed, strata, treatment counts, and finite-sample p-value correction remain as frozen.
 
@@ -98,7 +120,10 @@ population rules, boundary changes, or administrative discretion could violate t
 
 PAI 2.0 Good Governance is the principal Rajasthan outcome, with PAI 1.0 treated as a
 separate replication because the indicator systems differ. Failed links remain missing and
-are never recoded as zero. Because exploratory Rajasthan outcome analysis began before the
+are never recoded as zero. The primary sample uses direct LGD-code and exact-name links;
+reviewed fuzzy links, if any are approved, are a robustness variant only, and
+`tabs/raj_pai_effects.csv` also reports the estimate restricted to direct-code links. Because
+exploratory Rajasthan outcome analysis began before the
 design was frozen, neither the estimates nor later robustness checks are confirmatory.
 
 ## Mumbai (BMC): lottery-assigned women's seats

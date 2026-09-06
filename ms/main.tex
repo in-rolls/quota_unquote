@@ -42,16 +42,16 @@ The frozen UP analysis compares Gram Panchayats with a women-reserved pradhan se
 
 The causal interpretation requires the official reservation allocation to be random within the reconstructed strata. The governing laws establish reservation and rotation, but the current evidence does not establish random allocation within these strata. The estimates therefore describe conditional associations. Randomization inference shows what the test would yield under a fixed-count assignment mechanism; it does not prove that officials used that mechanism.
 
-The primary outcome is the PAI 2.0 Good Governance score for fiscal year 2023/24. The unit and weight are one Gram Panchayat and one vote in the average. PAI 1.0 is a separate replication because its indicators and scoring system differ from PAI 2.0. The two versions are not a panel outcome.
+The primary outcome is the PAI 2.0 Good Governance score for fiscal year 2023/24, a 0 to 100 index of 26 equally weighted indicators that the Gram Panchayat reports on the PAI portal and the Gram Sabha validates. Twenty-three are yes/no checks: whether the Gram Sabha, Mahila Sabha, Bal Sabha and standing committees met; whether the development plan was uploaded to eGramSwaraj on time and the provisional accounts closed within fifteen days and read out in the Gram Sabha; whether beneficiary and works lists are displayed and approved; whether a grievance system, online payments, online services, a common service centre, GeM procurement and a disaster plan exist; and whether the office keeps its hours. The other three are rates: growth in own-source revenue and the shares of planned activities initiated and completed. The unit and weight are one Gram Panchayat and one vote in the average. PAI 1.0 is a separate replication: its theme had 62 indicators, 25 of them rates such as the share of grievances redressed or of services delivered within the Citizens' Charter time, and only ten indicators appear in both versions (\url{https://pai.gov.in/MMS/Indicator/Theme-Indicators.aspx?t=8&s=2}; \url{https://pai.gov.in/MMS/Indicator/Theme-Indicators.aspx?t=8&s=1}). The two versions are not a panel outcome.
 
 \Needspace{10\baselineskip}
 \section{Measurement and linkage}
 
 UP election names, reservations, winner sex, and LGD links are standardized once in the \texttt{local\_elections\_up} repository. The analysis imports that pinned release rather than maintaining a second set of name repairs. The UP primary analysis spans \UpPaiTwoBlocks\ assignment blocks. A manually checked score-stratified sample supports the accepted election-to-LGD threshold.
 
-PAI 1.0 reports LGD Gram Panchayat codes, which permit a direct join. PAI 2.0 omits those codes. In UP, the analysis links exact normalized official GP names within district and LGD block, then tries exact election names for the remaining rows. In Rajasthan, the linkage also maps old district and block groups to the post-reorganization PAI geography through a reviewed crosswalk.
+Both PAI vintages report LGD Gram Panchayat codes, so each wave joins directly on the reviewed election-to-LGD link. In UP, exact normalized official GP names within district and LGD block, then exact election names, are tried for rows without a code; they add no links. In Rajasthan, where 4,729 of 7,882 panel rows carry a code, the linkage also maps old district and block groups to the post-reorganization PAI geography through a reviewed crosswalk.
 
-The matcher never decides a reviewed analysis link. It writes candidate pairs, scores, and one-to-one proposals to an audit directory. Reviewers inspect those pairs without reservation status or PAI scores and move only approved links into the active crosswalk. A failed link remains missing rather than becoming a zero. In UP PAI 2.0, coverage is \UpPaiTwoWomenMatchPct\% for women-reserved seats and \UpPaiTwoOpenMatchPct\% for other seats.
+The fuzzy matcher never decides a primary link. It writes candidate pairs, scores, and one-to-one proposals to an audit directory; a reviewer who approves one, without seeing reservation status or PAI scores, adds it to a robustness variant only. A failed link remains missing rather than becoming a zero. In UP PAI 2.0, coverage is \UpPaiTwoWomenMatchPct\% for women-reserved seats and \UpPaiTwoOpenMatchPct\% for other seats.
 
 \Needspace{12\baselineskip}
 \section{UP results}
@@ -71,7 +71,7 @@ The PAI 1.0 replication agrees. Its conditional difference is \UpPaiOneDifferenc
 \Needspace{18\baselineskip}
 \section{Rajasthan results}
 
-The exploratory Rajasthan result also sits near zero. The PAI 2.0 estimate is \RajPaiTwoDifference\ points (95\% CI: \RajPaiTwoCILow, \RajPaiTwoCIHigh), or \RajPaiTwoDifferenceSD\ standard deviations (95\% CI: \RajPaiTwoCILowSD, \RajPaiTwoCIHighSD). The PAI 1.0 replication is \RajPaiOneDifference\ points (95\% CI: \RajPaiOneCILow, \RajPaiOneCIHigh), or \RajPaiOneDifferenceSD\ standard deviations. These estimates were produced before the Rajasthan design was frozen, so they are exploratory.
+The exploratory Rajasthan result also sits near zero. The PAI 2.0 estimate is \RajPaiTwoDifference\ points (95\% CI: \RajPaiTwoCILow, \RajPaiTwoCIHigh), or \RajPaiTwoDifferenceSD\ standard deviations (95\% CI: \RajPaiTwoCILowSD, \RajPaiTwoCIHighSD). The PAI 1.0 replication is \RajPaiOneDifference\ points (95\% CI: \RajPaiOneCILow, \RajPaiOneCIHigh), or \RajPaiOneDifferenceSD\ standard deviations. Restricting PAI 2.0 to the \RajPaiTwoCodeLinkN\ GPs linked by LGD code gives \RajPaiTwoCodeLinkDifference\ points (95\% CI: \RajPaiTwoCodeLinkCILow, \RajPaiTwoCodeLinkCIHigh). These estimates were produced before the Rajasthan design was frozen, so they are exploratory.
 
 \begin{figure}[htbp]
 \centering
@@ -90,6 +90,6 @@ The exploratory Rajasthan result also sits near zero. The PAI 2.0 estimate is \R
 
 \section{Scope of the claim}
 
-The evidence supports a narrow result: women-reserved seats are not associated with better PAI Good Governance in the linked samples. The UP interval excludes even a small positive association on the standardized scale. The evidence does not yet identify a causal effect because the assignment mechanisms remain unverified, and incomplete portal coverage restricts the population. It cannot show that women pradhans reduce corruption because PAI does not measure leakage, bribery, or graft.
+The evidence supports a narrow result: women-reserved seats are not associated with better PAI Good Governance in the linked samples. The UP interval excludes even a small positive association on the standardized scale. The evidence does not yet identify a causal effect because the assignment mechanisms remain unverified, and the election-to-LGD link restricts the population to about three quarters of UP Gram Panchayats. It cannot show that women pradhans reduce corruption: the index asks whether procurement runs through GeM and whether the accounts were closed and read out, not whether money leaked.
 
 \end{document}

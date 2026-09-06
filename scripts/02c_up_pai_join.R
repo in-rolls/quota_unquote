@@ -23,7 +23,6 @@ pai <- read_parquet(here("data", "pai", "pai_gp_up_2022_2024.parquet")) |>
         pai_block_std = .data$block_std,
         pai_gp_name_std = .data$gp_name_std,
         pai_good_governance_score = .data$score,
-        pai_good_governance_grade = .data$grade,
         theme_slug = .data$theme_slug
     )
 
@@ -45,29 +44,43 @@ pai_unique_names <- pai |>
     )
 
 link_one_year <- function(year) {
+    pai_all <- pai |> filter(.data$pai_year == year)
     pai_year <- pai_unique_names |> filter(.data$pai_year == year)
 
-    direct_code_links <- tibble(
-        election_gp_key = character(),
-        pai_row_key = character(),
-        pai_link_method = character()
-    )
-    if (year == PAI_YEAR_REPLICATION) {
-        code_rows <- pai_year |> filter(!is.na(.data$pai_gp_code))
-        assert_unique(code_rows, "pai_gp_code", paste(year, "PAI GP codes"))
-        direct_code_links <- panel |>
-            filter(!is.na(.data$raw_lgd_gp_code)) |>
-            inner_join(
-                code_rows |> select("pai_row_key", "pai_gp_code"),
-                by = join_by(raw_lgd_gp_code == pai_gp_code),
-                relationship = "one-to-one"
-            ) |>
-            transmute(
-                election_gp_key = .data$election_gp_key,
-                pai_row_key = .data$pai_row_key,
-                pai_link_method = "direct_lgd_gp_code"
-            )
-    }
+    # Both PAI vintages carry LGD GP codes, so the reviewed election-to-LGD
+    # link joins directly. Name passes only serve rows without an LGD link.
+    code_rows <- pai_all |> filter(!is.na(.data$pai_gp_code))
+    assert_unique(code_rows, "pai_gp_code", paste(year, "PAI GP codes"))
+    code_candidates <- panel |>
+        filter(!is.na(.data$raw_lgd_gp_code)) |>
+        inner_join(
+            code_rows |> select("pai_row_key", "pai_gp_code", "pai_gp_name_std"),
+            by = join_by(raw_lgd_gp_code == pai_gp_code),
+            relationship = "one-to-one"
+        ) |>
+        mutate(
+            official_gp_name_std = normalize_name(.data$raw_lgd_gp_name),
+            name_agrees = .data$official_gp_name_std == .data$pai_gp_name_std
+        )
+    # A code whose PAI name is not the LGD name is doubtful (a portal code
+    # swap or a rename); such links are dropped, not adjudicated.
+    code_name_conflicts <- code_candidates |>
+        filter(!.data$name_agrees) |>
+        transmute(
+            pai_year = year,
+            election_gp_key = .data$election_gp_key,
+            raw_lgd_gp_code = .data$raw_lgd_gp_code,
+            raw_lgd_gp_name = .data$raw_lgd_gp_name,
+            raw_gp_name_2021 = .data$raw_gp_name_2021,
+            pai_row_key = .data$pai_row_key
+        )
+    direct_code_links <- code_candidates |>
+        filter(.data$name_agrees) |>
+        transmute(
+            election_gp_key = .data$election_gp_key,
+            pai_row_key = .data$pai_row_key,
+            pai_link_method = "direct_lgd_gp_code"
+        )
 
     official_name_links <- panel |>
         filter(
@@ -127,7 +140,7 @@ link_one_year <- function(year) {
 
     joined <- panel |>
         left_join(links, by = "election_gp_key", relationship = "one-to-one") |>
-        left_join(pai_year, by = "pai_row_key", relationship = "many-to-one") |>
+        left_join(pai_all, by = "pai_row_key", relationship = "many-to-one") |>
         mutate(
             pai_year = year,
             theme_slug = PAI_T8_SLUG,
@@ -137,13 +150,15 @@ link_one_year <- function(year) {
         stop(year, " PAI join did not conserve UP election rows", call. = FALSE)
     }
     assert_unique(joined, "election_gp_key", paste(year, "joined UP rows"))
-    joined
+    list(joined = joined, conflicts = code_name_conflicts)
 }
 
-joined <- bind_rows(
+linked <- list(
     link_one_year(PAI_YEAR_REPLICATION),
     link_one_year(PAI_YEAR_PRIMARY)
 )
+joined <- bind_rows(lapply(linked, `[[`, "joined"))
+code_name_conflicts <- bind_rows(lapply(linked, `[[`, "conflicts"))
 
 coverage <- joined |>
     group_by(.data$pai_year, .data$an_women_reserved) |>
@@ -208,6 +223,10 @@ write_csv_receipt(
 write_csv_receipt(
     normalized_collisions,
     here("data", "crosswalks", "audit", "up_pai_normalized_collisions.csv")
+)
+write_csv_receipt(
+    code_name_conflicts,
+    here("data", "crosswalks", "audit", "up_pai_code_name_conflicts.csv")
 )
 write_parquet_receipt(
     unmatched_left,

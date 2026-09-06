@@ -1,12 +1,13 @@
 upstream:
   pai:
     repo: in-rolls/pai
-    ref: 293ace5646d281b6f56bdfef983373ac559039c6
+    ref: af7db25
+    tag: v0.2.0
     sibling: ../pai
-    release: https://doi.org/10.7910/DVN/FRUKWS
+    release: https://github.com/in-rolls/pai/releases/tag/v0.2.0
+    huggingface: https://huggingface.co/datasets/soodoku/pai/tree/v0.2.0
     files:
-      gp_metadata.csv: f2ea4285311244e151f3113c1f7d73443a6554dd2f1448d65254b30bb500b86a
-      gp_scores_long.csv: 8dca2c14beef714255a5b798916fd0855fd0476194677cf24feb797887577fcd
+      data/release/pai_gp.parquet: da92576bccc178612e6250c122ac4cf843c190683cf028a5f0d6358620848b1e
   quota_raj:
     repo: in-rolls/quota_raj
     ref: 50c7fc919ff0f99e02da1a9c232fe3e56fb15823

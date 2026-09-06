@@ -22,25 +22,58 @@ verify_sha256 <- function(path, expected) {
     invisible(path)
 }
 
-resolve_pai_file <- function(filename) {
+PAI_RELEASE_FILE <- "data/release/pai_gp.parquet"
+
+resolve_pai_release <- function() {
     spec <- manifest()$upstream$pai
-    explicit_dir <- Sys.getenv("PAI_DATA_DIR", unset = "")
-    candidates <- c(
-        if (nzchar(explicit_dir)) file.path(path.expand(explicit_dir), filename),
-        file.path(spec$sibling, "data", filename)
-    )
-    candidates <- candidates[file.exists(candidates)]
-    if (length(candidates) == 0L) {
+    explicit <- Sys.getenv("PAI_RELEASE_FILE", unset = "")
+    path <- if (nzchar(explicit)) {
+        path.expand(explicit)
+    } else {
+        file.path(spec$sibling, PAI_RELEASE_FILE)
+    }
+    if (!file.exists(path)) {
         stop(
-            "Cannot find ", filename, ". Set PAI_DATA_DIR to a directory containing ",
-            "the consolidated PAI indexes. Rebuild them with ../pai/scripts/",
-            "pai_rebuild_index.py or extract the Dataverse release.",
+            "Cannot find ", path, ". Set PAI_RELEASE_FILE to the pai_gp.parquet from ",
+            "PAI release ", spec$tag, " (", spec$release, ").",
             call. = FALSE
         )
     }
-    path <- normalizePath(candidates[[1]], mustWork = TRUE)
-    verify_sha256(path, spec$files[[filename]])
+    path <- normalizePath(path, mustWork = TRUE)
+    verify_sha256(path, spec$files[[PAI_RELEASE_FILE]])
     path
+}
+
+# One row per scored GP and theme for one state. The release table is
+# universe-left (every LGD GP of the vintage), so rows without a published
+# scorecard are dropped here: downstream, "linked" must mean "has a score".
+read_pai_state_long <- function(state) {
+    wide <- arrow::read_parquet(resolve_pai_release()) |>
+        dplyr::filter(.data$state == .env$state, .data$score_available)
+    score_columns <- grep("_score$", names(wide), value = TRUE)
+    if (length(score_columns) != 10L) {
+        stop("Expected ten PAI score columns, found ", length(score_columns), call. = FALSE)
+    }
+    wide |>
+        dplyr::select(
+            "year", "state", "district", "district_value", "block", "block_value",
+            "gp_name", "gp_code", dplyr::all_of(score_columns)
+        ) |>
+        tidyr::pivot_longer(
+            dplyr::all_of(score_columns),
+            names_to = "theme_slug",
+            names_pattern = "^(.*)_score$",
+            values_to = "score"
+        ) |>
+        dplyr::mutate(
+            district_std = normalize_name(.data$district),
+            block_std = normalize_name(.data$block),
+            gp_name_std = normalize_name(.data$gp_name),
+            pai_row_key = paste(
+                .data$year, .data$district_value, .data$block_value,
+                .data$gp_name_std, sep = "__"
+            )
+        )
 }
 
 resolve_quota_raj_panel <- function() {

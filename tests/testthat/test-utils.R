@@ -21,7 +21,7 @@ test_that("the source manifest pins every input", {
         sources$local_reservations$files[["data/maharashtra/ulb_ward_2012.csv"]],
         "^[0-9a-f]{64}$"
     )
-    expect_match(sources$pai$files$gp_metadata.csv, "^[0-9a-f]{64}$")
+    expect_match(sources$pai$files[["data/release/pai_gp.parquet"]], "^[0-9a-f]{64}$")
     expect_match(
         sources$quota_raj$files[["data/raj/shrug_gp_raj_15_20_block.parquet"]],
         "^[0-9a-f]{64}$"
