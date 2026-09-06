@@ -18,8 +18,8 @@ def test_committed_indicator_table_meets_its_contract() -> None:
     assert len(frame) == 62 + 26
     kinds = frame.groupby(["pai_version", "kind"]).size().to_dict()
     assert kinds == {
-        ("PAI 1.0", "binary"): 37,
-        ("PAI 1.0", "ratio"): 25,
+        ("PAI 1.0", "binary"): 35,
+        ("PAI 1.0", "ratio"): 27,
         ("PAI 2.0", "binary"): 23,
         ("PAI 2.0", "ratio"): 3,
     }
@@ -67,4 +67,7 @@ def test_parse_and_classify_from_portal_markup() -> None:
     ]
     assert MODULE.classify("Percentage of Grievances redressed", "a", "b") == "ratio"
     assert MODULE.classify("Whether Gram Sabha conducted", "x", "x") == "binary"
-    assert MODULE.classify("Number of works monitored", "works", "") == "binary"
+    assert MODULE.classify("Number of works monitored", "works", "") == "number"
+    assert (
+        MODULE.classify("Whether ward sabhas held", "sabhas held", "wards") == "ratio"
+    )

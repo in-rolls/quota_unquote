@@ -59,7 +59,7 @@ missing values, 62 PAI 1.0 and 26 PAI 2.0 rows, exactly 10 indicator ids shared.
 | `fiscal_year` | string | indicator | `2022-2023`, `2023-2024` | constant within version | PAI release year |
 | `indicator_id` | int64 | indicator | portal indicator id | key with `pai_version`; the portal repeats an id under alias wordings and only the first is kept | bracketed suffix of the indicator label |
 | `mandatory` | string | indicator | `Mandatory`, `Optional` | none | portal column |
-| `kind` | string | indicator | `ratio` (denominator distinct from numerator), `binary` (yes/no check) | none | derived by `classify()` |
+| `kind` | string | indicator | `ratio` (denominator distinct from numerator), `number` (a single reported quantity), `binary` (yes/no check); theme 8 has no `number` rows | none | derived by `classify()` from the portal's columns, not the label |
 | `indicator` | string | indicator | indicator label without its id | non-empty | portal column |
 | `numerator` | string | indicator | data point label | non-empty | portal column |
 | `denominator` | string | indicator | data point label; empty for yes/no checks | non-empty when `kind` is `ratio` | portal column |
