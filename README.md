@@ -2,7 +2,9 @@
 
 Do seats reserved for women change how local governments govern? In the linked Uttar
 Pradesh and Rajasthan samples, women-reserved seats are associated with essentially no
-difference in Panchayat Advancement Index (PAI) Good Governance scores. The UP estimate
+difference in the Panchayat Advancement Index (PAI) Good Governance score, a 0 to 100 index
+of whether the panchayat held its meetings, filed its plan and accounts, and published its
+beneficiary and works lists. The UP estimate
 is -0.04 points, with a 95% confidence interval from -0.40 to 0.31. The Rajasthan estimate
 is -0.05 points, with an interval from -0.59 to 0.49. In Mumbai, where the city council's
 women's seats are drawn by lot, residents rate councillors in reserved wards 0.07
@@ -49,9 +51,33 @@ The project joins four sources:
   the CC0 replication deposit of Karekurve-Ramachandra and Lee (2025),
   [doi:10.7910/DVN/IO9SLQ](https://doi.org/10.7910/DVN/IO9SLQ).
 
-PAI 2.0 Good Governance for 2023-24 is the primary outcome. PAI 1.0 uses different
-indicators and scoring rules, so its 2022-23 score is a separate replication rather than a
-second observation of the same outcome.
+PAI 2.0 Good Governance for 2023-24 is the primary outcome. The Ministry of Panchayati Raj
+scores each Gram Panchayat on nine themes; Good Governance (theme 8) is built from equally
+weighted indicators that the panchayat reports on the [PAI portal](https://pai.gov.in) and
+the Gram Sabha and district validate. In PAI 2.0, 23 of its 26 indicators are yes/no
+checks: was a Gram Sabha, a Mahila Sabha and a Bal Sabha held; do standing committees meet;
+was the development plan uploaded to eGramSwaraj by 31 March; were provisional accounts
+closed within 15 days of year end and read out in the Gram Sabha; are beneficiary and works
+lists displayed and approved; is there a grievance system, online payment, online services,
+a co-located common service centre, GeM procurement, a disaster plan; is the office open.
+The other three are rates: growth in own-source revenue, and the shares of planned
+activities initiated and completed. So the primary outcome mostly records whether required
+procedures were carried out and documented, and a null means women-reserved panchayats are
+no more or less likely to hold the meetings, file the plan, close the books, publish the
+lists, and grow their own revenue.
+
+| Version | Fiscal year | Indicators | Rates | Yes/no checks | Shared with the other version |
+|---|---|---:|---:|---:|---:|
+| PAI 1.0 | 2022-23 | 62 | 25 | 37 | 10 |
+| PAI 2.0 | 2023-24 | 26 | 3 | 23 | 10 |
+
+PAI 1.0's theme 8 was closer to performance: a share of grievances redressed, of services
+delivered within the Citizens' Charter time, of works completed and geo-tagged, of issues
+raised by SC/ST, women, elderly and disabled residents acted on, and whether the social
+audit report was uploaded. PAI 2.0 dropped most of these rates for compliance checks, and
+only 10 indicators appear in both, so the 2022-23 score is a separate replication rather
+than a second observation of the same outcome. The full lists, fetched from the portal's
+indicator browser, are in [`docs/pai_theme8_indicators.csv`](docs/pai_theme8_indicators.csv).
 
 Both PAI vintages carry LGD Gram Panchayat codes in [PAI release v0.2.0](https://github.com/in-rolls/pai/releases/tag/v0.2.0),
 so each wave joins directly on the reviewed election-to-LGD link. Rajasthan's election
@@ -116,8 +142,11 @@ The UP and Rajasthan comparisons are not yet causal. Reservation laws establish 
 and minimum shares, but they do not by themselves prove random allocation within the
 reconstructed strata. Mumbai's draw is a lottery, so its contrast is causal for the seat.
 
-PAI cannot answer whether women leaders reduce corruption. That claim requires direct
-outcomes such as leakage, audit findings, procurement anomalies, or beneficiary fraud.
+PAI cannot answer whether women leaders reduce corruption. Its Good Governance theme does
+ask about procurement through GeM, closing the accounts, and Gram Sabha approval of
+beneficiary lists, but as checks that a procedure exists, not as measures of leakage,
+audit findings, procurement anomalies, or beneficiary fraud. Those outcomes are required for
+a corruption claim.
 
 Linkage restricts the result to the three quarters of UP Gram Panchayats with a reviewed
 LGD code, and to linked Rajasthan GPs. Similar coverage

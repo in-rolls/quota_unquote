@@ -24,7 +24,7 @@ One row in each analysis-ready file is one election GP observed against one PAI 
 | `pai_year` | PAI | character | election GP and PAI version | two rows per election GP | 2022-2023, 2023-2024 | none | none | source fiscal year | `01a_pai_prepare.R` |
 | `pai_row_key` | PAI | character | PAI GP and version | PAI rows linked to the election panel | year, portal district, portal block, GP composite | missing on unmatched election GPs | linkage missingness | concatenated with explicit separators | `01a_pai_prepare.R` |
 | `theme_slug` | PAI | character | election GP and version | all joined rows | `t8_panchayat_with_good_governance` | none | none | selected by stable slug | PAI portal |
-| `pai_good_governance_score` | PAI | double | PAI GP | PAI GPs with a published Theme 8 score | 0 to 100 | missing on unmatched election GPs | linkage missingness | none | PAI portal |
+| `pai_good_governance_score` | PAI | double | PAI GP | PAI GPs with a published Theme 8 score | 0 to 100; indicators in `pai_theme8_indicators.csv` | missing on unmatched election GPs | linkage missingness | none | PAI portal |
 | `pai_link_method` | derived | character | election GP and version | matched rows | direct code, exact name, reviewed fuzzy | missing on unmatched rows | linkage missingness | records the accepted pass | `02a_raj_pai_join.R` |
 | `pai_available` | derived | logical | election GP and version | all joined rows | TRUE, FALSE | none | none | score is nonmissing | `02a_raj_pai_join.R` |
 
@@ -44,6 +44,27 @@ One row in each analysis-ready file is one election GP observed against one PAI 
 | `assignment_stratum` | same | character | election GP | all 2021 rows | district, LGD block, caste composite | none | none | concatenated with explicit separators | `01d_up_treatment_prepare.R` |
 | `pai_link_method` | derived | character | election GP and version | matched UP rows | direct LGD code, exact official name, exact election name | missing when unmatched | linkage missingness | records the accepted join pass | `02c_up_pai_join.R` |
 | `pai_available` | derived | logical | election GP and version | all joined UP rows | TRUE, FALSE | none | none | score is nonmissing | `02c_up_pai_join.R` |
+
+## PAI theme 8 indicators
+
+`docs/pai_theme8_indicators.csv` lists every indicator behind the Good Governance theme for
+both PAI versions, as fetched from the portal's indicator browser by
+`scripts/00c_pai_theme8_indicators.py`. The script and `tests/test_pai_indicators.py`
+assert the contract below on every run: one row per (`pai_version`, `indicator_id`), no
+missing values, 62 PAI 1.0 and 26 PAI 2.0 rows, exactly 10 indicator ids shared.
+
+| name | type | unit | values | uniqueness | provenance |
+|---|---|---|---|---|---|
+| `pai_version` | string | indicator | `PAI 1.0`, `PAI 2.0` | part of the key | portal query `s=1` or `s=2` |
+| `fiscal_year` | string | indicator | `2022-2023`, `2023-2024` | constant within version | PAI release year |
+| `indicator_id` | int64 | indicator | portal indicator id | key with `pai_version`; the portal repeats an id under alias wordings and only the first is kept | bracketed suffix of the indicator label |
+| `mandatory` | string | indicator | `Mandatory`, `Optional` | none | portal column |
+| `kind` | string | indicator | `ratio` (denominator distinct from numerator), `binary` (yes/no check) | none | derived by `classify()` |
+| `indicator` | string | indicator | indicator label without its id | non-empty | portal column |
+| `numerator` | string | indicator | data point label | non-empty | portal column |
+| `denominator` | string | indicator | data point label; empty for yes/no checks | non-empty when `kind` is `ratio` | portal column |
+| `source_url` | string | indicator | portal page fetched | constant within version | script |
+| `retrieved_utc` | string | indicator | ISO 8601 UTC timestamp | non-empty | script |
 
 ## Open questions
 
