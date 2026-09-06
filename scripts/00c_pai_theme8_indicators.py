@@ -40,7 +40,12 @@ INDICATOR_DTYPES: dict[str, Any] = {
     "retrieved_utc": "string",
 }
 KEY = ["pai_version", "indicator_id"]
-KINDS = {"ratio", "binary"}
+KINDS = {"ratio", "number", "binary"}
+NUMERIC_LABEL = re.compile(
+    r"^(number of|no\. of|total |percentage|share of|ratio of|rate of"
+    r"|drop-?out rate|average)",
+    re.I,
+)
 MANDATORY = {"Mandatory", "Optional"}
 
 ID_SUFFIX = re.compile(r"\s*\[(\d+)\]\s*$")
@@ -86,11 +91,13 @@ def parse(page: str) -> list[tuple[str, str, str, str]]:
 
 
 def classify(indicator: str, numerator: str, denominator: str) -> str:
-    """A ratio has a denominator distinct from its numerator; the rest are yes/no."""
-    if indicator.lower().startswith("whether"):
-        return "binary"
+    """Ratio: a denominator distinct from the numerator. Number: a single reported
+    quantity. Binary: everything else, a yes/no wording on the portal. The kind
+    follows the portal's data columns, not the label wording."""
     if denominator and denominator.lower() != numerator.lower():
         return "ratio"
+    if NUMERIC_LABEL.match(indicator):
+        return "number"
     return "binary"
 
 

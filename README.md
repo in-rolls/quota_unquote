@@ -60,21 +60,23 @@ was the development plan uploaded to eGramSwaraj by 31 March; were provisional a
 closed within 15 days of year end and read out in the Gram Sabha; are beneficiary and works
 lists displayed and approved; is there a grievance system, online payment, online services,
 a co-located common service centre, GeM procurement, a disaster plan; is the office open.
-The other three are rates: growth in own-source revenue, and the shares of planned
+The other three are ratios: growth in own-source revenue, and the shares of planned
 activities initiated and completed. So the primary outcome mostly records whether required
 procedures were carried out and documented, and a null means women-reserved panchayats are
 no more or less likely to hold the meetings, file the plan, close the books, publish the
 lists, and grow their own revenue.
 
-| Version | Fiscal year | Indicators | Rates | Yes/no checks | Shared with the other version |
+| Version | Fiscal year | Indicators | Ratios | Yes/no checks | Shared with the other version |
 |---|---|---:|---:|---:|---:|
-| PAI 1.0 | 2022-23 | 62 | 25 | 37 | 10 |
+| PAI 1.0 | 2022-23 | 62 | 27 | 35 | 10 |
 | PAI 2.0 | 2023-24 | 26 | 3 | 23 | 10 |
 
 PAI 1.0's theme 8 was closer to performance: a share of grievances redressed, of services
 delivered within the Citizens' Charter time, of works completed and geo-tagged, of issues
 raised by SC/ST, women, elderly and disabled residents acted on, and whether the social
-audit report was uploaded. PAI 2.0 dropped most of these rates for compliance checks, and
+audit report was uploaded. A ratio has a denominator distinct from its numerator on the
+portal, whatever the label says; a check is a yes/no question. PAI 2.0 dropped most of these
+ratios for compliance checks, and
 only 10 indicators appear in both, so the 2022-23 score is a separate replication rather
 than a second observation of the same outcome. The full lists, fetched from the portal's
 indicator browser, are in [`docs/pai_theme8_indicators.csv`](docs/pai_theme8_indicators.csv).
