@@ -13,6 +13,7 @@ import html
 import http.cookiejar
 import re
 import urllib.request
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
@@ -48,16 +49,26 @@ CELL = re.compile(r"<td[^>]*>(.*?)</td>", re.S)
 TAG = re.compile(r"<[^>]+>")
 
 
-def fetch(session_id: int, opener: urllib.request.OpenerDirector) -> str:
-    """Return the indicator page for one PAI version.
+# The portal renders the PAI 1.0 table only once a session cookie exists, so the
+# PAI 2.0 page is requested first through a cookie-carrying opener.
+FETCH_ORDER = (2, 1)
 
-    The portal only renders the PAI 1.0 table once a session cookie exists, so
-    the opener must carry a cookie jar and be reused across calls.
-    """
+
+def fetch(session_id: int, opener: urllib.request.OpenerDirector) -> str:
+    """Return the indicator page for one PAI version."""
     url = f"{PORTAL}?t={THEME}&s={session_id}"
     request = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     with opener.open(request, timeout=60) as response:
         return response.read().decode("utf-8", errors="replace")
+
+
+def fetch_pages(
+    opener: urllib.request.OpenerDirector, fetch_one: Callable[..., str] = fetch
+) -> dict[int, str]:
+    """Fetch every version's page in `FETCH_ORDER`, sharing one session."""
+    if set(FETCH_ORDER) != set(VERSIONS):
+        raise ValueError("FETCH_ORDER must cover every version")
+    return {session_id: fetch_one(session_id, opener) for session_id in FETCH_ORDER}
 
 
 def _text(cell: str) -> str:
@@ -169,7 +180,7 @@ def main() -> None:
         urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar())
     )
     retrieved = dt.datetime.now(dt.UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
-    pages = {session_id: fetch(session_id, opener) for session_id in sorted(VERSIONS)}
+    pages = fetch_pages(opener)
     frame = validate(build(pages, retrieved))
     args.output.parent.mkdir(parents=True, exist_ok=True)
     frame.to_csv(args.output, index=False)

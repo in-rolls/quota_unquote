@@ -5,7 +5,7 @@ Pradesh and Rajasthan samples, women-reserved seats are associated with essentia
 difference in the Panchayat Advancement Index (PAI) Good Governance score, a 0 to 100 index
 of whether the panchayat held its meetings, filed its plan and accounts, and published its
 beneficiary and works lists. The UP estimate
-is -0.04 points, with a 95% confidence interval from -0.40 to 0.31. The Rajasthan estimate
+is 0.07 points, with a 95% confidence interval from -0.22 to 0.36. The Rajasthan estimate
 is -0.05 points, with an interval from -0.59 to 0.49. In Mumbai, where the city council's
 women's seats are drawn by lot, residents rate councillors in reserved wards 0.07
 control-group standard deviations higher on a 14-item index, with an interval from -0.10

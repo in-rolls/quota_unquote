@@ -39,6 +39,18 @@ def test_validate_rejects_duplicate_keys_and_bad_kinds() -> None:
         MODULE.validate(lost_row)
 
 
+def test_pai_2_page_is_requested_before_pai_1_to_seed_the_session() -> None:
+    calls: list[int] = []
+
+    def fake_fetch(session_id: int, opener: object) -> str:
+        calls.append(session_id)
+        return ""
+
+    pages = MODULE.fetch_pages(opener=object(), fetch_one=fake_fetch)
+    assert calls == [2, 1]
+    assert set(pages) == {1, 2}
+
+
 def test_parse_and_classify_from_portal_markup() -> None:
     page = (
         "<table><tr><td>1</td><td>Mandatory</td>"
