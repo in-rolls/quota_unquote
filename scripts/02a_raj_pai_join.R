@@ -31,7 +31,6 @@ pai_1 <- pai |>
         pai_block = .data$block,
         pai_gp_name = .data$gp_name,
         pai_good_governance_score = .data$score,
-        pai_good_governance_grade = .data$grade,
         theme_slug = .data$theme_slug
     )
 
@@ -52,7 +51,7 @@ joined_1 <- panel |>
     )
 
 # =============================================================================
-# PAI 2.0: approved groups, then exact GP names
+# PAI 2.0: direct LGD GP code, then approved groups and exact GP names
 # =============================================================================
 
 pai_2 <- pai |>
@@ -60,6 +59,7 @@ pai_2 <- pai |>
     transmute(
         pai_year = .data$year,
         pai_row_key = .data$pai_row_key,
+        pai_gp_code = .data$gp_code,
         pai_district = .data$district,
         pai_block = .data$block,
         pai_gp_name = .data$gp_name,
@@ -67,7 +67,6 @@ pai_2 <- pai |>
         pai_block_std = .data$block_std,
         pai_gp_name_std = .data$gp_name_std,
         pai_good_governance_score = .data$score,
-        pai_good_governance_grade = .data$grade,
         theme_slug = .data$theme_slug
     )
 
@@ -155,7 +154,24 @@ panel_groups <- panel |>
     ) |>
     select(-"exact_group", -"override_district_std", -"override_block_std")
 
+assert_unique(pai_2, "pai_gp_code", "PAI 2.0 GP codes")
+code_links <- panel_groups |>
+    filter(!is.na(.data$raw_lgd_gp_code)) |>
+    inner_join(
+        pai_2 |> select("pai_row_key", "pai_gp_code"),
+        by = join_by(raw_lgd_gp_code == pai_gp_code),
+        relationship = "many-to-one"
+    ) |>
+    add_count(.data$pai_row_key, name = "right_candidates") |>
+    filter(.data$right_candidates == 1L) |>
+    transmute(
+        election_gp_key = .data$election_gp_key,
+        pai_row_key = .data$pai_row_key,
+        pai_link_method = "direct_lgd_gp_code"
+    )
+
 official_candidates <- panel_groups |>
+    anti_join(code_links, by = "election_gp_key") |>
     left_join(
         pai_2 |> select("pai_row_key", "pai_district_std", "pai_block_std", "pai_gp_name_std"),
         by = join_by(
@@ -167,7 +183,10 @@ official_candidates <- panel_groups |>
     )
 
 official_links <- official_candidates |>
-    filter(!is.na(.data$pai_row_key)) |>
+    filter(
+        !is.na(.data$pai_row_key),
+        !.data$pai_row_key %in% code_links$pai_row_key
+    ) |>
     add_count(.data$pai_row_key, name = "right_candidates") |>
     filter(.data$right_candidates == 1L) |>
     transmute(
@@ -177,6 +196,7 @@ official_links <- official_candidates |>
     )
 
 election_candidates <- panel_groups |>
+    anti_join(code_links, by = "election_gp_key") |>
     anti_join(official_links, by = "election_gp_key") |>
     left_join(
         pai_2 |> select("pai_row_key", "pai_district_std", "pai_block_std", "pai_gp_name_std"),
@@ -191,7 +211,7 @@ election_candidates <- panel_groups |>
 election_links <- election_candidates |>
     filter(
         !is.na(.data$pai_row_key),
-        !.data$pai_row_key %in% official_links$pai_row_key
+        !.data$pai_row_key %in% c(code_links$pai_row_key, official_links$pai_row_key)
     ) |>
     add_count(.data$pai_row_key, name = "right_candidates") |>
     filter(.data$right_candidates == 1L) |>
@@ -201,7 +221,7 @@ election_links <- election_candidates |>
         pai_link_method = "exact_election_gp_name"
     )
 
-exact_links <- bind_rows(official_links, election_links)
+exact_links <- bind_rows(code_links, official_links, election_links)
 assert_unique(exact_links, "election_gp_key", "Accepted exact PAI 2.0 links")
 assert_unique(exact_links, "pai_row_key", "Accepted exact PAI 2.0 targets")
 
@@ -226,6 +246,9 @@ gp_overrides <- read_csv(
 if (nrow(gp_overrides) > 0L) {
     assert_unique(gp_overrides, "election_gp_key", "Reviewed PAI 2.0 GP links")
     assert_unique(gp_overrides, "pai_row_key", "Reviewed PAI 2.0 GP targets")
+    if (any(gp_overrides$election_gp_key %in% code_links$election_gp_key)) {
+        stop("A reviewed GP link would override a direct LGD code link", call. = FALSE)
+    }
     override_values <- gp_overrides |>
         select(.data$election_gp_key, .data$pai_row_key) |>
         left_join(pai_2, by = join_by(pai_row_key), relationship = "many-to-one")

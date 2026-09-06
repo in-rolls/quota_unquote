@@ -49,7 +49,7 @@ The primary outcome is the PAI 2.0 Good Governance score for fiscal year 2023/24
 
 UP election names, reservations, winner sex, and LGD links are standardized once in the \texttt{local\_elections\_up} repository. The analysis imports that pinned release rather than maintaining a second set of name repairs. The UP primary analysis spans \UpPaiTwoBlocks\ assignment blocks. A manually checked score-stratified sample supports the accepted election-to-LGD threshold.
 
-PAI 1.0 reports LGD Gram Panchayat codes, which permit a direct join. PAI 2.0 omits those codes. In UP, the analysis links exact normalized official GP names within district and LGD block, then tries exact election names for the remaining rows. In Rajasthan, the linkage also maps old district and block groups to the post-reorganization PAI geography through a reviewed crosswalk.
+Both PAI vintages report LGD Gram Panchayat codes, so each wave joins directly on the reviewed election-to-LGD link. In UP, exact normalized official GP names within district and LGD block, then exact election names, are tried for rows without a code; they add no links. In Rajasthan, where 4,729 of 7,882 panel rows carry a code, the linkage also maps old district and block groups to the post-reorganization PAI geography through a reviewed crosswalk.
 
 The matcher never decides a reviewed analysis link. It writes candidate pairs, scores, and one-to-one proposals to an audit directory. Reviewers inspect those pairs without reservation status or PAI scores and move only approved links into the active crosswalk. A failed link remains missing rather than becoming a zero. In UP PAI 2.0, coverage is \UpPaiTwoWomenMatchPct\% for women-reserved seats and \UpPaiTwoOpenMatchPct\% for other seats.
 
@@ -90,6 +90,6 @@ The exploratory Rajasthan result also sits near zero. The PAI 2.0 estimate is \R
 
 \section{Scope of the claim}
 
-The evidence supports a narrow result: women-reserved seats are not associated with better PAI Good Governance in the linked samples. The UP interval excludes even a small positive association on the standardized scale. The evidence does not yet identify a causal effect because the assignment mechanisms remain unverified, and incomplete portal coverage restricts the population. It cannot show that women pradhans reduce corruption because PAI does not measure leakage, bribery, or graft.
+The evidence supports a narrow result: women-reserved seats are not associated with better PAI Good Governance in the linked samples. The UP interval excludes even a small positive association on the standardized scale. The evidence does not yet identify a causal effect because the assignment mechanisms remain unverified, and the election-to-LGD link restricts the population to about three quarters of UP Gram Panchayats. It cannot show that women pradhans reduce corruption because PAI does not measure leakage, bribery, or graft.
 
 \end{document}

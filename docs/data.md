@@ -25,7 +25,6 @@ One row in each analysis-ready file is one election GP observed against one PAI 
 | `pai_row_key` | PAI | character | PAI GP and version | PAI rows linked to the election panel | year, portal district, portal block, GP composite | missing on unmatched election GPs | linkage missingness | concatenated with explicit separators | `01a_pai_prepare.R` |
 | `theme_slug` | PAI | character | election GP and version | all joined rows | `t8_panchayat_with_good_governance` | none | none | selected by stable slug | PAI portal |
 | `pai_good_governance_score` | PAI | double | PAI GP | PAI GPs with a published Theme 8 score | 0 to 100 | missing on unmatched election GPs | linkage missingness | none | PAI portal |
-| `pai_good_governance_grade` | PAI | character | PAI GP | PAI GPs with a published Theme 8 grade | source grade labels | missing on unmatched election GPs | linkage missingness | none | PAI portal |
 | `pai_link_method` | derived | character | election GP and version | matched rows | direct code, exact name, reviewed fuzzy | missing on unmatched rows | linkage missingness | records the accepted pass | `02a_raj_pai_join.R` |
 | `pai_available` | derived | logical | election GP and version | all joined rows | TRUE, FALSE | none | none | score is nonmissing | `02a_raj_pai_join.R` |
 
@@ -49,7 +48,7 @@ One row in each analysis-ready file is one election GP observed against one PAI 
 ## Open questions
 
 - The 2020 reservation allocation frame and fixed treatment counts within each district, Panchayat Samiti, and caste category still require an official source.
-- PAI 2.0 omits GP codes. The 77 nonexact district-block mappings passed blinded clerical review; `pai2_group_mapping_audit.csv` records the supporting counts and GP-name overlaps.
+- PAI release v0.2.0 carries LGD GP codes for both vintages. The 77 reviewed nonexact district-block mappings now serve only Rajasthan rows without an LGD code; `pai2_group_mapping_audit.csv` records the supporting counts and GP-name overlaps.
 - Rajasthan GP fuzzy-link precision and recall remain unknown until a stratified clerical sample is labeled.
 - The UP election-to-LGD accepted threshold has 75 accepted-band links checked by hand, all judged matches. Lower-scoring proposals remain outside the active crosswalk.
 - PAI score missingness in the joined file currently means failed record linkage, not a portal score of zero.
@@ -64,7 +63,8 @@ join must preserve all 7,882 election rows; missing LGD codes remain unmatched.
 
 ### Rajasthan PAI 2.0 geography
 
-The pipeline first joins normalized district-block groups exactly. Nonexact groups require
+Panel rows with an LGD GP code join PAI 2.0 directly on that code (4,704 of 7,882). For the
+rest, the pipeline first joins normalized district-block groups exactly. Nonexact groups require
 an approved row in `pai2_group_overrides.csv`. The active list contains 77 source groups
 affected by spelling or Rajasthan's district reorganization. Review excluded treatment and
 outcome fields. Each target must exist in PAI, each left group must be unique, and ambiguous
@@ -82,9 +82,10 @@ The canonical `local_elections_up` release supplies exactly 49,773 2021 GP winne
 This repository imports its names, reservation recodes, LGD links, and collision flags rather
 than maintaining parallel overrides.
 
-PAI 1.0 joins accepted election-to-LGD GP codes directly. PAI 2.0 first uses exact normalized
-official GP names within district and LGD block, then exact normalized election GP names among
-unused rows. Accepted links must be one to one. Each wave preserves all 49,773 election rows,
+Both waves join accepted election-to-LGD GP codes directly. Rows without a code then try
+exact normalized official GP names within district and LGD block, then exact normalized
+election GP names among unused rows; on PAI release v0.2.0 these passes add no links.
+Accepted links must be one to one. Each wave preserves all 49,773 election rows,
 and the stacked file must contain exactly 99,546 rows.
 
 ### Required diagnostics
